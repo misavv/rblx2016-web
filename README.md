@@ -11,7 +11,7 @@ on Roblox's game servers.
 | Folder     | What it is                                               | Deploy to |
 |------------|----------------------------------------------------------|-----------|
 | `site/`    | The game client: engine (`js/`), content, places, menus  | Vercel project 1 |
-| `catalog/` | Avatar catalog item files and thumbnails (about 510 MB)  | Vercel project 2 |
+| `catalog/` | Avatar catalog item files and thumbnails (about 420 MB)  | Vercel project 2 |
 | `relay/`   | Multiplayer relay (WebSocket); Vercel can't host these   | Cloudflare Workers, or any Node host |
 
 The site and the catalog are separate projects because a Vercel Hobby deployment
@@ -22,16 +22,17 @@ holds at most about 1 GB of static files. The site proxies `/catalog/item/*` and
 
 1. Push this repository to GitHub. A **private** repository works with Vercel.
 2. **Catalog project:** in Vercel, choose *Add New → Project*, import the repo, and set
+   - Project Name: `archivieblocks-catalog`
    - Root Directory: `catalog`
    - Framework Preset: *Other*, with no build command and output directory `.`
 
-   Deploy it and note its URL, for example `https://rblx2016-catalog.vercel.app`.
-3. Edit `site/vercel.json` and replace both `https://YOUR-CATALOG-PROJECT.vercel.app`
-   with the catalog URL. Commit and push.
-4. **Site project:** import the same repo again as a second project, with
+   `site/vercel.json` already points at `https://archivieblocks-catalog.vercel.app`.
+   If you pick another name, replace that address in `site/vercel.json` (twice).
+   The catalog only redeploys when something in `catalog/` changes.
+3. **Site project:** import the same repo again as a second project, with
    - Root Directory: `site`
    - Framework Preset: *Other*, with no build command and output directory `.`
-5. Deploy the multiplayer relay (see below) and put its address in
+4. Deploy the multiplayer relay (see below) and put its address in
    `site/mp-relay.json`, for example `{ "url": "wss://rblx2016-relay.<you>.workers.dev" }`.
    Commit and push.
 
@@ -45,7 +46,12 @@ Browsers can't send UDP, so each engine's RakNet packets are tunnelled over a
 WebSocket to a small relay, which forwards them between the players in a room.
 The relay never sees game state; it only forwards packets.
 
-**Cloudflare Workers (free plan):**
+Use Cloudflare or a Node host for the relay. A relay on Vercel works only
+partly: Vercel ends every WebSocket after about 5 minutes and may split a room
+across server instances. Players reconnect automatically after a drop, but
+games are smoother on a relay built for long connections.
+
+**Cloudflare Workers (free plan, recommended):**
 
 ```
 cd relay/cloudflare
@@ -76,7 +82,17 @@ page, which overrides `mp-relay.json`.
 3. Everyone who joins that room afterwards plays the host's game, whatever
    place they had selected.
 
-If the host leaves, the server shuts down with them.
+If the host leaves, the server shuts down with them. If the relay connection
+drops briefly, everyone reconnects with the same address and keeps playing.
+
+- **One player per computer:** a second tab or window in the same browser
+  can't join multiplayer while one is already playing.
+- **Chat and name filter:** the host's server censors swear words, slurs and
+  personal info (phone numbers, e-mails, links) in chat with `#`, including
+  l33t, stretched and spaced-out spellings, and censors player names the same
+  way. It covers the classic 2016 chat, the 2017 chat and the Lua APIs
+  `Chat:FilterStringAsync`, `FilterStringForBroadcast` and
+  `FilterStringForPlayerAsync`.
 
 ## Notes
 

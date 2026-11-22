@@ -98,7 +98,7 @@ if (ENVIRONMENT_IS_PTHREAD) {
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: C:\Users\misa\AppData\Local\Temp\tmp83vkwgri.js
+// include: C:\Users\misa\AppData\Local\Temp\tmprwux9mmp.js
 if (!Module["expectedDataFileDownloads"]) Module["expectedDataFileDownloads"] = 0;
 
 Module["expectedDataFileDownloads"]++;
@@ -4021,23 +4021,23 @@ Module["expectedDataFileDownloads"]++;
   });
 }))();
 
-// end include: C:\Users\misa\AppData\Local\Temp\tmp83vkwgri.js
-// include: C:\Users\misa\AppData\Local\Temp\tmpcycn1pcu.js
+// end include: C:\Users\misa\AppData\Local\Temp\tmprwux9mmp.js
+// include: C:\Users\misa\AppData\Local\Temp\tmpxxzz3xi7.js
 // All the pre-js content up to here must remain later on, we need to run
 // it.
 if ((typeof ENVIRONMENT_IS_WASM_WORKER !== "undefined" && ENVIRONMENT_IS_WASM_WORKER) || (typeof ENVIRONMENT_IS_PTHREAD !== "undefined" && ENVIRONMENT_IS_PTHREAD) || (typeof ENVIRONMENT_IS_AUDIO_WORKLET !== "undefined" && ENVIRONMENT_IS_AUDIO_WORKLET)) Module["preRun"] = [];
 
 var necessaryPreJSTasks = Module["preRun"].slice();
 
-// end include: C:\Users\misa\AppData\Local\Temp\tmpcycn1pcu.js
-// include: C:\Users\misa\AppData\Local\Temp\tmp1s4cav2e.js
+// end include: C:\Users\misa\AppData\Local\Temp\tmpxxzz3xi7.js
+// include: C:\Users\misa\AppData\Local\Temp\tmpr04xt7fs.js
 if (!Module["preRun"]) throw "Module.preRun should exist because file support used it; did a pre-js delete it?";
 
 necessaryPreJSTasks.forEach(task => {
   if (!Module["preRun"].includes(task)) throw "All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?";
 });
 
-// end include: C:\Users\misa\AppData\Local\Temp\tmp1s4cav2e.js
+// end include: C:\Users\misa\AppData\Local\Temp\tmpr04xt7fs.js
 var programArgs = [];
 
 var thisProgram = "./this.program";
@@ -14330,7 +14330,7 @@ function checkIncomingModuleAPI() {
 }
 
 var ASM_CONSTS = {
-  10855836: ($0, $1) => {
+  10855004: ($0, $1) => {
     try {
       localStorage.setItem("rblx2016.ds." + (Module.__rblxPlaceKey || "") + "|" + UTF8ToString($0), UTF8ToString($1));
     } catch (e) {}
@@ -14636,6 +14636,8 @@ var _rblx_net_message = Module["_rblx_net_message"] = makeInvalidEarlyAccess("_r
 
 var _main = makeInvalidEarlyAccess("_main");
 
+var _rblx_filter_text = Module["_rblx_filter_text"] = makeInvalidEarlyAccess("_rblx_filter_text");
+
 var _rblx_net_set_ip = Module["_rblx_net_set_ip"] = makeInvalidEarlyAccess("_rblx_net_set_ip");
 
 var _rblx_net_signal = Module["_rblx_net_signal"] = makeInvalidEarlyAccess("_rblx_net_signal");
@@ -14759,6 +14761,7 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports["rblx_net_state"] !== "undefined", "missing Wasm export: rblx_net_state");
   assert(typeof wasmExports["rblx_net_message"] !== "undefined", "missing Wasm export: rblx_net_message");
   assert(typeof wasmExports["main"] !== "undefined", "missing Wasm export: main");
+  assert(typeof wasmExports["rblx_filter_text"] !== "undefined", "missing Wasm export: rblx_filter_text");
   assert(typeof wasmExports["rblx_net_set_ip"] !== "undefined", "missing Wasm export: rblx_net_set_ip");
   assert(typeof wasmExports["rblx_net_signal"] !== "undefined", "missing Wasm export: rblx_net_signal");
   assert(typeof wasmExports["rblx_net_take"] !== "undefined", "missing Wasm export: rblx_net_take");
@@ -14850,6 +14853,7 @@ function assignWasmExports(wasmExports) {
   _rblx_net_state = Module["_rblx_net_state"] = createExportWrapper("rblx_net_state", wasmExports["rblx_net_state"], 0);
   _rblx_net_message = Module["_rblx_net_message"] = createExportWrapper("rblx_net_message", wasmExports["rblx_net_message"], 0);
   _main = createExportWrapper("main", wasmExports["main"], 2);
+  _rblx_filter_text = Module["_rblx_filter_text"] = createExportWrapper("rblx_filter_text", wasmExports["rblx_filter_text"], 2);
   _rblx_net_set_ip = Module["_rblx_net_set_ip"] = createExportWrapper("rblx_net_set_ip", wasmExports["rblx_net_set_ip"], 1);
   _rblx_net_signal = Module["_rblx_net_signal"] = createExportWrapper("rblx_net_signal", wasmExports["rblx_net_signal"], 0);
   _rblx_net_take = Module["_rblx_net_take"] = createExportWrapper("rblx_net_take", wasmExports["rblx_net_take"], 1);

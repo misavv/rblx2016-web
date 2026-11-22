@@ -1517,7 +1517,30 @@
     });
   }
 
+  // One multiplayer player per computer (per browser): a second tab or
+  // window can't join while one is already playing. The lock is released
+  // when the page closes.
+  let playerSlot = null;
+  function claimPlayerSlot() {
+    if (playerSlot) return playerSlot;
+    if (!navigator.locks || !navigator.locks.request) return (playerSlot = Promise.resolve(true));
+    playerSlot = new Promise((resolve) => {
+      navigator.locks.request("rblx2016-multiplayer-player", { ifAvailable: true }, (lock) => {
+        if (!lock) { resolve(false); return null; }
+        resolve(true);
+        return new Promise(() => {});  // held for the life of this page
+      }).catch(() => resolve(true));
+    });
+    return playerSlot.then((ok) => { if (!ok) playerSlot = null; return ok; });
+  }
+
   async function playMultiplayer(cfg, name) {
+    // ?multi=1 on a local dev server allows several test players in one browser.
+    const devMulti = /^(127\.0\.0\.1|localhost)$/.test(location.hostname) &&
+      new URLSearchParams(location.search).get("multi") === "1";
+    if (!devMulti && !(await claimPlayerSlot()))
+      throw new Error("You're already playing multiplayer in another tab or window. " +
+        "Only one player per computer can join; close the other one first.");
     if (cfg.relay === location.origin && !window.__rblxLocalServer &&
         !/^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname) && !/workers\.dev$/.test(location.hostname)) {
       // Static hosts (Vercel, GitHub Pages) can't run the relay themselves.
@@ -1556,7 +1579,12 @@
     }
     if (typeof mod._rblx_set_membership === "function")
       mod.ccall("rblx_set_membership", null, ["number"], [bcTier()]);
+    // Censor the player's name (the server censors it again).
+    if (typeof mod._rblx_filter_text === "function") {
+      try { name = mod.ccall("rblx_filter_text", "string", ["string", "number"], [name, 1]) || name; } catch (_) {}
+    }
     window.RblxNet.attach(mod, conn);
+    conn.on("dropped", () => console.warn("[rbx2016] relay connection dropped; reconnecting"));
     // What you wear: the server dresses your character with it.
     conn.send({ t: "hello", name, spec: avatarSpec() });
     await configureAssetProxy(mod);
