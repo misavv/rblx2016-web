@@ -22,11 +22,11 @@ holds at most about 1 GB of static files. The site proxies `/catalog/item/*` and
 
 1. Push this repository to GitHub. A **private** repository works with Vercel.
 2. **Catalog project:** in Vercel, choose *Add New → Project*, import the repo, and set
-   - Project Name: `archivieblocks-catalog`
+   - Project Name: `webcatalogrlbx`
    - Root Directory: `catalog`
    - Framework Preset: *Other*, with no build command and output directory `.`
 
-   `site/vercel.json` already points at `https://archivieblocks-catalog.vercel.app`.
+   `site/vercel.json` already points at `https://webcatalogrlbx.vercel.app`.
    If you pick another name, replace that address in `site/vercel.json` (twice).
    The catalog only redeploys when something in `catalog/` changes.
 3. **Site project:** import the same repo again as a second project, with

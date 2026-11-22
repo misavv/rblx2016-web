@@ -31,11 +31,11 @@
   "rewrites": [
     {
       "source": "/catalog/item/:path*",
-      "destination": "https://archivieblocks-catalog.vercel.app/catalog/item/:path*"
+      "destination": "https://webcatalogrlbx.vercel.app/catalog/item/:path*"
     },
     {
       "source": "/catalog/thumbs/:path*",
-      "destination": "https://archivieblocks-catalog.vercel.app/catalog/thumbs/:path*"
+      "destination": "https://webcatalogrlbx.vercel.app/catalog/thumbs/:path*"
     }
   ]
 }
