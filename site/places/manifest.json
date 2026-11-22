@@ -1,0 +1,920 @@
+[
+{
+"name": "A Bridge too far (2010 classic)",
+"file": "A Bridge too far (2010 classic).rbxl",
+"bytes": 21769974,
+"gz": true
+},
+{
+"name": "Accelerate (2014 game)",
+"file": "Accelerate (2014 game).rbxl",
+"bytes": 11525606,
+"gz": true
+},
+{
+"name": "Airships and Rockets (2016 test map)",
+"file": "Airships and Rockets (2016 test map).rbxl",
+"bytes": 113026,
+"gz": true
+},
+{
+"name": "Animatronic Roleplay 2 (2014 game)",
+"file": "Animatronic Roleplay 2 (2014 game).rbxl",
+"bytes": 498424,
+"gz": true
+},
+{
+"name": "Apocalypse Rising (2014 popular)",
+"file": "Apocalypse Rising (2014 popular).rbxl",
+"bytes": 1785945,
+"gz": true
+},
+{
+"name": "Baseplate (2016)",
+"file": "Baseplate (2016).rbxl",
+"bytes": 8830,
+"gz": true
+},
+{
+"name": "Battle Arena (2016 test map)",
+"file": "Battle Arena (2016 test map).rbxl",
+"bytes": 4369764,
+"gz": true
+},
+{
+"name": "Battle Beetles (2015 game)",
+"file": "Battle Beetles (2015 game).rbxl",
+"bytes": 171900,
+"gz": true
+},
+{
+"name": "Battleships (2016 test map)",
+"file": "Battleships (2016 test map).rbxl",
+"bytes": 4082208,
+"gz": true
+},
+{
+"name": "Be Crushed by a Speeding Wall (2017)",
+"file": "Be Crushed by a Speeding Wall (2017).rbxl",
+"bytes": 263108,
+"gz": true
+},
+{
+"name": "Beards VS Aliens Paintball",
+"file": "Beards VS Aliens Paintball.rbxl",
+"bytes": 105441,
+"gz": true
+},
+{
+"name": "Black Magic (2014 popular)",
+"file": "Black Magic (2014 popular).rbxl",
+"bytes": 5035375,
+"gz": true
+},
+{
+"name": "Bloxxers in Arms (2014 popular)",
+"file": "Bloxxers in Arms (2014 popular).rbxl",
+"bytes": 750915,
+"gz": true
+},
+{
+"name": "Bushido (2017 game)",
+"file": "Bushido (2017 game).rbxl",
+"bytes": 495440,
+"gz": true
+},
+{
+"name": "Candy Tycoon (2016 game)",
+"file": "Candy Tycoon (2016 game).rbxl",
+"bytes": 875671,
+"gz": true
+},
+{
+"name": "Cars Crashing (2016 test map)",
+"file": "Cars Crashing (2016 test map).rbxl",
+"bytes": 188110,
+"gz": true
+},
+{
+"name": "Castle Warfare (2008 classic)",
+"file": "Castle Warfare (2008 classic).rbxl",
+"bytes": 10393064,
+"gz": true
+},
+{
+"name": "Chess (2017 game)",
+"file": "Chess (2017 game).rbxl",
+"bytes": 169983,
+"gz": true
+},
+{
+"name": "City Demo (2016 test map)",
+"file": "City Demo (2016 test map).rbxl",
+"bytes": 1590425,
+"gz": true
+},
+{
+"name": "Classic Starter Place (2016)",
+"file": "Classic Starter Place (2016).rbxl",
+"bytes": 42122,
+"gz": true
+},
+{
+"name": "Crossroads (2016 test map)",
+"file": "Crossroads (2016 test map).rbxl",
+"bytes": 9634980,
+"gz": true
+},
+{
+"name": "Cube Cavern (2017 game)",
+"file": "Cube Cavern (2017 game).rbxl",
+"bytes": 1994194,
+"gz": true
+},
+{
+"name": "Deathrun 2 (2014 popular)",
+"file": "Deathrun 2 (2014 popular).rbxl",
+"bytes": 972592,
+"gz": true
+},
+{
+"name": "Deathrun Map (2015 game)",
+"file": "Deathrun Map (2015 game).rbxl",
+"bytes": 1188961,
+"gz": true
+},
+{
+"name": "Demolition Derby (2016 classic)",
+"file": "Demolition Derby (2016 classic).rbxl",
+"bytes": 4197185,
+"gz": true
+},
+{
+"name": "Destroy the Noobs 2 (2015 game)",
+"file": "Destroy the Noobs 2 (2015 game).rbxl",
+"bytes": 38791,
+"gz": true
+},
+{
+"name": "Destroy the Noobs 3 (2015 game)",
+"file": "Destroy the Noobs 3 (2015 game).rbxl",
+"bytes": 39335,
+"gz": true
+},
+{
+"name": "Disaster Hotel (2010 classic)",
+"file": "Disaster Hotel (2010 classic).rbxl",
+"bytes": 12110764,
+"gz": true
+},
+{
+"name": "Disaster Lobby 2 (2014 game)",
+"file": "Disaster Lobby 2 (2014 game).rbxl",
+"bytes": 178066,
+"gz": true
+},
+{
+"name": "Dodge The Teapots of Doom! (2007 classic)",
+"file": "Dodge The Teapots of Doom! (2007 classic).rbxl",
+"bytes": 179815,
+"gz": true
+},
+{
+"name": "Doomspire Brickbattle (2016 popular)",
+"file": "Doomspire Brickbattle (2016 popular).rbxl",
+"bytes": 194451,
+"gz": true
+},
+{
+"name": "Down Hill Smash! (2008 classic)",
+"file": "Down Hill Smash! (2008 classic).rbxl",
+"bytes": 1398021,
+"gz": true
+},
+{
+"name": "Egg Hunt 2016 (2016 popular)",
+"file": "Egg Hunt 2016 (2016 popular).rbxl",
+"bytes": 1787033,
+"gz": true
+},
+{
+"name": "Egg Hunt 2016 - An Eggcellent Eggventure",
+"file": "Egg Hunt 2016 - An Eggcellent Eggventure.rbxl",
+"bytes": 1090794,
+"gz": true
+},
+{
+"name": "Epic Mining 2 (2015 popular)",
+"file": "Epic Mining 2 (2015 popular).rbxl",
+"bytes": 1648833,
+"gz": true
+},
+{
+"name": "Escape BOB Obby (2014 game)",
+"file": "Escape BOB Obby (2014 game).rbxl",
+"bytes": 100803,
+"gz": true
+},
+{
+"name": "Escape Memes Obby (2017 game)",
+"file": "Escape Memes Obby (2017 game).rbxl",
+"bytes": 307075,
+"gz": true
+},
+{
+"name": "Escape the iPhone - Obby!",
+"file": "Escape the iPhone - Obby!.rbxl",
+"bytes": 2468241,
+"gz": true
+},
+{
+"name": "Expedition (2014 game)",
+"file": "Expedition (2014 game).rbxl",
+"bytes": 1761317,
+"gz": true
+},
+{
+"name": "F3X Building Game (2015L)",
+"file": "F3X Building Game (2015L).rbxl",
+"bytes": 178889,
+"gz": true
+},
+{
+"name": "Fall Down Stairs! (2010 classic)",
+"file": "Fall Down Stairs! (2010 classic).rbxl",
+"bytes": 1601740,
+"gz": true
+},
+{
+"name": "FAXSTORY (2017 game)",
+"file": "FAXSTORY (2017 game).rbxl",
+"bytes": 193785,
+"gz": true
+},
+{
+"name": "Fierce Battle Royale (2014 popular)",
+"file": "Fierce Battle Royale (2014 popular).rbxl",
+"bytes": 3859628,
+"gz": true
+},
+{
+"name": "Find The Domos",
+"file": "Find The Domos.rbxl",
+"bytes": 7861497,
+"gz": true
+},
+{
+"name": "Flood Escape (2015)",
+"file": "Flood Escape (2015).rbxl",
+"bytes": 395038,
+"gz": true
+},
+{
+"name": "Food Empire (2016 game)",
+"file": "Food Empire (2016 game).rbxl",
+"bytes": 1105838,
+"gz": true
+},
+{
+"name": "Forsaken Sword Legacies 3 (2015 game)",
+"file": "Forsaken Sword Legacies 3 (2015 game).rbxl",
+"bytes": 686249,
+"gz": true
+},
+{
+"name": "Galleons (2010 classic)",
+"file": "Galleons (2010 classic).rbxl",
+"bytes": 3206304,
+"gz": true
+},
+{
+"name": "Galleons (2014 popular)",
+"file": "Galleons (2014 popular).rbxl",
+"bytes": 257297,
+"gz": true
+},
+{
+"name": "Gmod Prop Hunt (2014 game)",
+"file": "Gmod Prop Hunt (2014 game).rbxl",
+"bytes": 921817,
+"gz": true
+},
+{
+"name": "Goradiel RPG 4 (2014 game)",
+"file": "Goradiel RPG 4 (2014 game).rbxl",
+"bytes": 1019610,
+"gz": true
+},
+{
+"name": "Grow-a-brick (2008 classic)",
+"file": "Grow-a-brick (2008 classic).rbxl",
+"bytes": 743860,
+"gz": true
+},
+{
+"name": "Hampton (2017 game)",
+"file": "Hampton (2017 game).rbxl",
+"bytes": 1990463,
+"gz": true
+},
+{
+"name": "Happy Home in Robloxia (2007 classic)",
+"file": "Happy Home in Robloxia (2007 classic).rbxl",
+"bytes": 4947825,
+"gz": true
+},
+{
+"name": "Haunted Mansion (2006 classic)",
+"file": "Haunted Mansion (2006 classic).rbxl",
+"bytes": 7157343,
+"gz": true
+},
+{
+"name": "Hide n' Seek XL (2012 classic)",
+"file": "Hide n' Seek XL (2012 classic).rbxl",
+"bytes": 30476517,
+"gz": true
+},
+{
+"name": "Hole in the Wall (2011)",
+"file": "Hole in the Wall (2011).rbxl",
+"bytes": 3629203,
+"gz": true
+},
+{
+"name": "House Tycoon (2015 game)",
+"file": "House Tycoon (2015 game).rbxl",
+"bytes": 530402,
+"gz": true
+},
+{
+"name": "Imperium (2016 game)",
+"file": "Imperium (2016 game).rbxl",
+"bytes": 8194735,
+"gz": true
+},
+{
+"name": "Island III (2015 popular)",
+"file": "Island III (2015 popular).rbxl",
+"bytes": 375783,
+"gz": true
+},
+{
+"name": "It's Rainin' Trains (2014 game)",
+"file": "It's Rainin' Trains (2014 game).rbxl",
+"bytes": 103868,
+"gz": true
+},
+{
+"name": "Lego's Obby (2017 classic)",
+"file": "Lego's Obby (2017 classic).rbxl",
+"bytes": 1940266,
+"gz": true
+},
+{
+"name": "Lego's Plane Wars (2017 classic)",
+"file": "Lego's Plane Wars (2017 classic).rbxl",
+"bytes": 4742755,
+"gz": true
+},
+{
+"name": "Lego's Tower Climb 2 (2017 classic)",
+"file": "Lego's Tower Climb 2 (2017 classic).rbxl",
+"bytes": 14981232,
+"gz": true
+},
+{
+"name": "Life in Roblox Town",
+"file": "Life in Roblox Town.rbxl",
+"bytes": 2954160,
+"gz": true
+},
+{
+"name": "Light Bulb (2015 game)",
+"file": "Light Bulb (2015 game).rbxl",
+"bytes": 2054995,
+"gz": true
+},
+{
+"name": "Line Runner (2015 game)",
+"file": "Line Runner (2015 game).rbxl",
+"bytes": 170863,
+"gz": true
+},
+{
+"name": "Lumber Tycoon 2 (2016 popular)",
+"file": "Lumber Tycoon 2 (2016 popular).rbxl",
+"bytes": 1439679,
+"gz": true
+},
+{
+"name": "Mad Games (2015 popular)",
+"file": "Mad Games (2015 popular).rbxl",
+"bytes": 1050307,
+"gz": true
+},
+{
+"name": "Mansion Tycoon (2014 game)",
+"file": "Mansion Tycoon (2014 game).rbxl",
+"bytes": 286672,
+"gz": true
+},
+{
+"name": "MeepCity (2016 popular)",
+"file": "MeepCity (2016 popular).rbxl",
+"bytes": 1449621,
+"gz": true
+},
+{
+"name": "Mega Marble Run (2015 popular)",
+"file": "Mega Marble Run (2015 popular).rbxl",
+"bytes": 5770767,
+"gz": true
+},
+{
+"name": "Mega Miners",
+"file": "Mega Miners.rbxl",
+"bytes": 501010,
+"gz": true
+},
+{
+"name": "Merry-go-round (2016 test map)",
+"file": "Merry-go-round (2016 test map).rbxl",
+"bytes": 12928,
+"gz": true
+},
+{
+"name": "Minigame Madness (2016 popular)",
+"file": "Minigame Madness (2016 popular).rbxl",
+"bytes": 333561,
+"gz": true
+},
+{
+"name": "Minigame World (2007 classic)",
+"file": "Minigame World (2007 classic).rbxl",
+"bytes": 2187851,
+"gz": true
+},
+{
+"name": "Mining Inc (2015 game)",
+"file": "Mining Inc (2015 game).rbxl",
+"bytes": 625815,
+"gz": true
+},
+{
+"name": "Mirrors Edge Maintower Madness (2015 popular)",
+"file": "Mirrors Edge Maintower Madness (2015 popular).rbxl",
+"bytes": 4378635,
+"gz": true
+},
+{
+"name": "Muffin Kombat 2014",
+"file": "Muffin Kombat 2014.rbxl",
+"bytes": 1242894,
+"gz": true
+},
+{
+"name": "Murder Mystery (2015 popular)",
+"file": "Murder Mystery (2015 popular).rbxl",
+"bytes": 753015,
+"gz": true
+},
+{
+"name": "Murder Mystery 2 (2014 popular)",
+"file": "Murder Mystery 2 (2014 popular).rbxl",
+"bytes": 2658224,
+"gz": true
+},
+{
+"name": "N City (2014 game)",
+"file": "N City (2014 game).rbxl",
+"bytes": 2859353,
+"gz": true
+},
+{
+"name": "Nobelium Town V2 (2016 classic)",
+"file": "Nobelium Town V2 (2016 classic).rbxl",
+"bytes": 19133588,
+"gz": true
+},
+{
+"name": "Noob Defense (2017 game)",
+"file": "Noob Defense (2017 game).rbxl",
+"bytes": 690214,
+"gz": true
+},
+{
+"name": "Nuke The Whales! (2008 classic)",
+"file": "Nuke The Whales! (2008 classic).rbxl",
+"bytes": 1282143,
+"gz": true
+},
+{
+"name": "Old Cars v2 (2016 classic)",
+"file": "Old Cars v2 (2016 classic).rbxl",
+"bytes": 1089970,
+"gz": true
+},
+{
+"name": "Phantom Forces (2016 popular)",
+"file": "Phantom Forces (2016 popular).rbxl",
+"bytes": 5648328,
+"gz": true
+},
+{
+"name": "Pinball Wizards! (2007 classic)",
+"file": "Pinball Wizards! (2007 classic).rbxl",
+"bytes": 790171,
+"gz": true
+},
+{
+"name": "Plants vs Zombies (2015 popular)",
+"file": "Plants vs Zombies (2015 popular).rbxl",
+"bytes": 3418503,
+"gz": true
+},
+{
+"name": "Project Radiation (2014 game)",
+"file": "Project Radiation (2014 game).rbxl",
+"bytes": 568185,
+"gz": true
+},
+{
+"name": "Purple Skittles 2 (2017 game)",
+"file": "Purple Skittles 2 (2017 game).rbxl",
+"bytes": 264040,
+"gz": true
+},
+{
+"name": "Red vs Blue (2016 game)",
+"file": "Red vs Blue (2016 game).rbxl",
+"bytes": 476395,
+"gz": true
+},
+{
+"name": "Redwood Prison 2016",
+"file": "Redwood Prison 2016.rbxl",
+"bytes": 1798183,
+"gz": true
+},
+{
+"name": "Retail Tycoon (2016 popular)",
+"file": "Retail Tycoon (2016 popular).rbxl",
+"bytes": 743546,
+"gz": true
+},
+{
+"name": "ROBLOX Battle Hallows Eve (2014 popular)",
+"file": "ROBLOX Battle Hallows Eve (2014 popular).rbxl",
+"bytes": 496714,
+"gz": true
+},
+{
+"name": "ROBLOX Bowling Alley (2009 classic)",
+"file": "ROBLOX Bowling Alley (2009 classic).rbxl",
+"bytes": 3964477,
+"gz": true
+},
+{
+"name": "ROBLOX Racing (2014 game)",
+"file": "ROBLOX Racing (2014 game).rbxl",
+"bytes": 244396,
+"gz": true
+},
+{
+"name": "ROBLOX World Headquarters (2007 classic)",
+"file": "ROBLOX World Headquarters (2007 classic).rbxl",
+"bytes": 12319587,
+"gz": true
+},
+{
+"name": "Rocket Arena (2016 test map)",
+"file": "Rocket Arena (2016 test map).rbxl",
+"bytes": 4048034,
+"gz": true
+},
+{
+"name": "Rocket vs Wall (2016 test map)",
+"file": "Rocket vs Wall (2016 test map).rbxl",
+"bytes": 19444,
+"gz": true
+},
+{
+"name": "Rocketship Rally! (2007 classic)",
+"file": "Rocketship Rally! (2007 classic).rbxl",
+"bytes": 1656254,
+"gz": true
+},
+{
+"name": "ROtris (2009 classic)",
+"file": "ROtris (2009 classic).rbxl",
+"bytes": 207576,
+"gz": true
+},
+{
+"name": "Run Fast To Win (2017 game)",
+"file": "Run Fast To Win (2017 game).rbxl",
+"bytes": 433160,
+"gz": true
+},
+{
+"name": "Sanicball (2016 popular)",
+"file": "Sanicball (2016 popular).rbxl",
+"bytes": 613058,
+"gz": true
+},
+{
+"name": "School Detective (2014 popular)",
+"file": "School Detective (2014 popular).rbxl",
+"bytes": 121737,
+"gz": true
+},
+{
+"name": "Servo Spider (2016 test map)",
+"file": "Servo Spider (2016 test map).rbxl",
+"bytes": 42212,
+"gz": true
+},
+{
+"name": "Siege Wars (2016 game)",
+"file": "Siege Wars (2016 game).rbxl",
+"bytes": 205944,
+"gz": true
+},
+{
+"name": "Silent Dark (2016 game)",
+"file": "Silent Dark (2016 game).rbxl",
+"bytes": 112519,
+"gz": true
+},
+{
+"name": "Sky Runners",
+"file": "Sky Runners.rbxl",
+"bytes": 649285,
+"gz": true
+},
+{
+"name": "Skybound 2 (2014 popular)",
+"file": "Skybound 2 (2014 popular).rbxl",
+"bytes": 1380922,
+"gz": true
+},
+{
+"name": "Space Frontier (2015 game)",
+"file": "Space Frontier (2015 game).rbxl",
+"bytes": 1144454,
+"gz": true
+},
+{
+"name": "Speed Run 4 (2015 popular)",
+"file": "Speed Run 4 (2015 popular).rbxl",
+"bytes": 377113,
+"gz": true
+},
+{
+"name": "Starter Place (2016 popular)",
+"file": "Starter Place (2016 popular).rbxl",
+"bytes": 310859,
+"gz": true
+},
+{
+"name": "Super Hero Life (2015 popular)",
+"file": "Super Hero Life (2015 popular).rbxl",
+"bytes": 1009255,
+"gz": true
+},
+{
+"name": "Super Smash Bros ROBLOX (2014 popular)",
+"file": "Super Smash Bros ROBLOX (2014 popular).rbxl",
+"bytes": 390508,
+"gz": true
+},
+{
+"name": "Survival 303 (2014 popular)",
+"file": "Survival 303 (2014 popular).rbxl",
+"bytes": 150221,
+"gz": true
+},
+{
+"name": "Survive the Disasters (2014 popular)",
+"file": "Survive the Disasters (2014 popular).rbxl",
+"bytes": 633924,
+"gz": true
+},
+{
+"name": "Survive the Spheres (2009 classic)",
+"file": "Survive the Spheres (2009 classic).rbxl",
+"bytes": 16895250,
+"gz": true
+},
+{
+"name": "Sword Fight on the Heights III (2008 classic)",
+"file": "Sword Fight on the Heights III (2008 classic).rbxl",
+"bytes": 1851812,
+"gz": true
+},
+{
+"name": "Sword Fights on the Heights II (2008 classic)",
+"file": "Sword Fights on the Heights II (2008 classic).rbxl",
+"bytes": 1367648,
+"gz": true
+},
+{
+"name": "Sword Fights on the Heights IV (2008 classic)",
+"file": "Sword Fights on the Heights IV (2008 classic).rbxl",
+"bytes": 2783904,
+"gz": true
+},
+{
+"name": "Tank vs Trees (2016 test map)",
+"file": "Tank vs Trees (2016 test map).rbxl",
+"bytes": 43425,
+"gz": true
+},
+{
+"name": "Terrain Vehicles (2016 test map)",
+"file": "Terrain Vehicles (2016 test map).rbxl",
+"bytes": 11307997,
+"gz": true
+},
+{
+"name": "The Hunger Games",
+"file": "The Hunger Games.rbxl",
+"bytes": 2032371,
+"gz": true
+},
+{
+"name": "The Iron Cafe (2011 classic)",
+"file": "The Iron Cafe (2011 classic).rbxl",
+"bytes": 6182679,
+"gz": true
+},
+{
+"name": "The Mad Murderer (2014 popular)",
+"file": "The Mad Murderer (2014 popular).rbxl",
+"bytes": 457554,
+"gz": true
+},
+{
+"name": "The Normal Elevator (2015 popular)",
+"file": "The Normal Elevator (2015 popular).rbxl",
+"bytes": 3771402,
+"gz": true
+},
+{
+"name": "The Plaza Karts (2015 popular)",
+"file": "The Plaza Karts (2015 popular).rbxl",
+"bytes": 4552426,
+"gz": true
+},
+{
+"name": "The Stalker (2015 game)",
+"file": "The Stalker (2015 game).rbxl",
+"bytes": 149824,
+"gz": true
+},
+{
+"name": "The Undead Coming (2009 classic)",
+"file": "The Undead Coming (2009 classic).rbxl",
+"bytes": 3628262,
+"gz": true
+},
+{
+"name": "The Underground War (2009 classic)",
+"file": "The Underground War (2009 classic).rbxl",
+"bytes": 3990883,
+"gz": true
+},
+{
+"name": "Thrillville park (2007 classic)",
+"file": "Thrillville park (2007 classic).rbxl",
+"bytes": 28642199,
+"gz": true
+},
+{
+"name": "Timmy and the Killbots (2007 classic)",
+"file": "Timmy and the Killbots (2007 classic).rbxl",
+"bytes": 2543611,
+"gz": true
+},
+{
+"name": "TNT Demo (2016 test map)",
+"file": "TNT Demo (2016 test map).rbxl",
+"bytes": 2087531,
+"gz": true
+},
+{
+"name": "TNT Run 2 (2015 popular)",
+"file": "TNT Run 2 (2015 popular).rbxl",
+"bytes": 3103138,
+"gz": true
+},
+{
+"name": "Tornado Alley (2015 popular)",
+"file": "Tornado Alley (2015 popular).rbxl",
+"bytes": 6732620,
+"gz": true
+},
+{
+"name": "Train Crashing (2007 classic)",
+"file": "Train Crashing (2007 classic).rbxl",
+"bytes": 4242889,
+"gz": true
+},
+{
+"name": "Trick-or-Traitors (2014 popular)",
+"file": "Trick-or-Traitors (2014 popular).rbxl",
+"bytes": 4170649,
+"gz": true
+},
+{
+"name": "Tsunami Wipeout (2015 popular)",
+"file": "Tsunami Wipeout (2015 popular).rbxl",
+"bytes": 146560,
+"gz": true
+},
+{
+"name": "Twisted Murderer (2015 popular)",
+"file": "Twisted Murderer (2015 popular).rbxl",
+"bytes": 4327354,
+"gz": true
+},
+{
+"name": "Typical Colors 2 (2016 popular)",
+"file": "Typical Colors 2 (2016 popular).rbxl",
+"bytes": 4225655,
+"gz": true
+},
+{
+"name": "Ultimate Boxing (2016 game)",
+"file": "Ultimate Boxing (2016 game).rbxl",
+"bytes": 2004583,
+"gz": true
+},
+{
+"name": "Ultimate Build (2010 classic)",
+"file": "Ultimate Build (2010 classic).rbxl",
+"bytes": 5604310,
+"gz": true
+},
+{
+"name": "Urban Terror Brickbattle (2015 classic)",
+"file": "Urban Terror Brickbattle (2015 classic).rbxl",
+"bytes": 17256486,
+"gz": true
+},
+{
+"name": "Wizard Wars (2008 classic)",
+"file": "Wizard Wars (2008 classic).rbxl",
+"bytes": 4487624,
+"gz": true
+},
+{
+"name": "WOLF Battlegrounds (2016 game)",
+"file": "WOLF Battlegrounds (2016 game).rbxl",
+"bytes": 2600656,
+"gz": true
+},
+{
+"name": "Work at a Pizza Place (2010 classic)",
+"file": "Work at a Pizza Place (2010 classic).rbxl",
+"bytes": 6864141,
+"gz": true
+},
+{
+"name": "Work at a Pizza Place (2014 popular)",
+"file": "Work at a Pizza Place (2014 popular).rbxl",
+"bytes": 846487,
+"gz": true
+},
+{
+"name": "Work at a Pizza Place (2017 popular)",
+"file": "Work at a Pizza Place (2017 popular).rbxl",
+"bytes": 1354683,
+"gz": true
+},
+{
+"name": "Wrecking Ball (2016 test map)",
+"file": "Wrecking Ball (2016 test map).rbxl",
+"bytes": 16324,
+"gz": true
+},
+{
+"name": "Zombie Defense 3 (2016 game)",
+"file": "Zombie Defense 3 (2016 game).rbxl",
+"bytes": 1198842,
+"gz": true
+},
+{
+"name": "Zombie Survival Advanced",
+"file": "Zombie Survival Advanced.rbxl",
+"bytes": 2284435,
+"gz": true
+},
+{
+"name": "Zombiesdale (2014 popular)",
+"file": "Zombiesdale (2014 popular).rbxl",
+"bytes": 286141,
+"gz": true
+}
+]

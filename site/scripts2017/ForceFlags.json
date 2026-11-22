@@ -1,0 +1,5 @@
+{
+ "DFFlagScriptExecutionContextApi": "True",
+ "DFFlagTextBoxIsFocusedEnabled": "True",
+ "FFlagLuaBasedBubbleChat": "True"
+}

@@ -1,0 +1,1 @@
+-- [web] the Xbox app shell has no game loading screen

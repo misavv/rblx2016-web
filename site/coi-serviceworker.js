@@ -1,0 +1,167 @@
+/* Cross-origin isolation + local asset store for static hosting.
+ *
+ * The engine is built with pthreads, so the page needs SharedArrayBuffer,
+ * which browsers only expose to cross-origin isolated pages. On a host that
+ * cannot send COOP/COEP (GitHub Pages) this worker adds the headers and
+ * reloads the page once.
+ *
+ * It also answers /asset/?id=N from web/assets/<id>.gz, the packed copy of
+ * every mesh and texture the bundled places and catalog accessories use.
+ * Ids outside the pack are fetched through the Worker from asset-proxy.json
+ * (unless a local server is answering). Responses are cached so later visits
+ * (and offline) are instant.
+ */
+const ASSET_CACHE = "rblx2016-assets";
+let assetIndex = null;
+let proxyBase;
+let localServer;
+
+async function packedAssetIds() {
+  if (assetIndex) return assetIndex;
+  try {
+    const response = await fetch(new URL("assets/index.json", self.registration.scope), { cache: "no-cache" });
+    assetIndex = new Set(response.ok ? (await response.json()).ids || [] : []);
+  } catch (_) {
+    assetIndex = new Set();
+  }
+  return assetIndex;
+}
+
+async function gunzip(response) {
+  if (typeof DecompressionStream === "undefined" || !response.body) return response.arrayBuffer();
+  const stream = response.body.pipeThrough(new DecompressionStream("gzip"));
+  return new Response(stream).arrayBuffer();
+}
+
+function withIsolationHeaders(response) {
+  if (response.status === 0) return response;
+  const headers = new Headers(response.headers);
+  // fetch() already decoded the body, so the original encoding and length no
+  // longer describe it (GitHub Pages gzips XML/text files).
+  headers.delete("Content-Encoding");
+  headers.delete("Content-Length");
+  headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+  headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  headers.set("Cross-Origin-Resource-Policy", "cross-origin");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: headers,
+  });
+}
+
+async function servePackedAsset(event) {
+  const url = new URL(event.request.url);
+  // A project page lives under /<repo>/, so match the path suffix.
+  const path = url.pathname.replace(/\/+$/, "");
+  if (!path.endsWith("/asset")) return null;
+  const id = url.searchParams.get("id") || url.searchParams.get("assetId");
+  if (!id || !/^\d{1,20}$/.test(id)) return null;
+  if (!(await packedAssetIds()).has(id)) return null;
+  const cache = await caches.open(ASSET_CACHE);
+  const cached = await cache.match(event.request);
+  if (cached) return cached;
+  try {
+    const packed = await fetch(new URL("assets/" + id + ".gz", self.registration.scope));
+    if (!packed.ok) return null;
+    const body = await gunzip(packed);
+    const response = new Response(body, {
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    });
+    await cache.put(event.request, response.clone());
+    return response;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function assetProxyBase() {
+  if (proxyBase !== undefined) return proxyBase;
+  try {
+    const response = await fetch(new URL("asset-proxy.json", self.registration.scope), { cache: "no-cache" });
+    proxyBase = response.ok ? ((await response.json()).base || "") : "";
+  } catch (_) {
+    proxyBase = "";
+  }
+  return proxyBase;
+}
+
+async function hasLocalServer() {
+  if (localServer !== undefined) return localServer;
+  try {
+    localServer = (await fetch(new URL("cookie", self.registration.scope), { cache: "no-store" })).ok;
+  } catch (_) {
+    localServer = false;
+  }
+  return localServer;
+}
+
+// The pack covers the bundled places and the old catalog; anything else
+// (new hats, updated meshes) comes from the Worker that holds the session.
+async function serveProxiedAsset(event) {
+  const url = new URL(event.request.url);
+  const path = url.pathname.replace(/\/+$/, "");
+  if (!path.endsWith("/asset")) return null;
+  const id = url.searchParams.get("id") || url.searchParams.get("assetId");
+  if (!id || !/^\d{1,20}$/.test(id)) return null;
+  if (await hasLocalServer()) return null;
+  const base = await assetProxyBase();
+  if (!base) return null;
+  const cache = await caches.open(ASSET_CACHE);
+  const cached = await cache.match(event.request);
+  if (cached) return cached;
+  try {
+    const response = await fetch(base.replace(/\/+$/, "") + "/asset?id=" + id);
+    if (!response.ok) return null;
+    const body = await response.arrayBuffer();
+    const stored = new Response(body, {
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    });
+    await cache.put(event.request, stored.clone());
+    return stored;
+  } catch (_) {
+    return null;
+  }
+}
+
+if (typeof window === "undefined") {
+  self.addEventListener("install", () => self.skipWaiting());
+  self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
+  self.addEventListener("fetch", (event) => {
+    const request = event.request;
+    if (request.cache === "only-if-cached" && request.mode !== "same-origin") return;
+    event.respondWith(
+      (async () => {
+        try {
+          const packed = await servePackedAsset(event);
+          if (packed) return withIsolationHeaders(packed);
+          const proxied = await serveProxiedAsset(event);
+          if (proxied) return withIsolationHeaders(proxied);
+          return withIsolationHeaders(await fetch(request));
+        } catch (_) {
+          return Response.error();
+        }
+      })(),
+    );
+  });
+} else if (!window.crossOriginIsolated && window.isSecureContext && navigator.serviceWorker) {
+  window.addEventListener("load", () => {
+    if (sessionStorage.getItem("rblx2016.coi-reloaded") === "1") return;
+    navigator.serviceWorker.register("coi-serviceworker.js").then((registration) => {
+      const reload = () => {
+        sessionStorage.setItem("rblx2016.coi-reloaded", "1");
+        location.reload();
+      };
+      if (registration.active) reload();
+      else if (registration.installing || registration.waiting) {
+        navigator.serviceWorker.ready.then(reload);
+      }
+    }).catch((error) => console.warn("[rbx2016] cross-origin isolation unavailable:", error));
+  });
+}

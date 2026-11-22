@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROBLOX for Xbox</title>
+<link rel="icon" href="shell/Icons/RobloxIcon32.png">
+<link rel="stylesheet" href="xbox.css">
+</head>
+<body>
+<div id="stage">
+  <div class="bg"></div>
+
+  <!-- EngagementScreen.lua -->
+  <section class="layer" id="engage">
+    <img src="shell/Icons/ROBLOXSplashLogo.png" alt="ROBLOX">
+    <div class="hint">Press Any Button To Begin</div>
+  </section>
+
+  <!-- AppHub.lua -->
+  <section class="layer" id="hub" hidden>
+    <img class="logo" src="shell/Icons/ROBLOXLogoSmall@1080.png" alt="ROBLOX">
+    <div class="pad-dot" id="padState"></div>
+    <nav class="dock" id="dock"></nav>
+
+    <div class="pane" id="home"></div>
+    <div class="pane" id="avatar" hidden></div>
+    <div class="pane" id="games" hidden></div>
+    <div class="pane" id="friends" hidden></div>
+    <div class="pane" id="robux" hidden></div>
+
+    <div class="hints">
+      <span><img src="shell/ButtonIcons/AButton.png" alt="A">Select</span>
+      <span><img src="shell/ButtonIcons/BButton.png" alt="B">Back</span>
+      <span class="push"><img src="shell/ButtonIcons/XButton.png" alt="X">Settings</span>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+<script src="../js/avatar3d.js"></script>
+<script src="xbox.js"></script>
+</body>
+</html>
