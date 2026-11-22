@@ -3002,6 +3002,15 @@
       try { rendered = localStorage.getItem("rblx2016.xbox.avatarRendered"); } catch (_) {}
       // Hidden tabs can't render, so a background boot doesn't start the job.
       if (rendered !== avatarRenderKey() && !q.has("norender") && document.visibilityState === "visible") {
+        // On a static host the picture is kept by the service worker; on a
+        // first visit, give it a moment to take control before rendering.
+        const sw = navigator.serviceWorker;
+        if (sw && !sw.controller && !/^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname)) {
+          await Promise.race([
+            new Promise((r) => sw.addEventListener("controllerchange", r, { once: true })),
+            new Promise((r) => setTimeout(r, 5000)),
+          ]);
+        }
         location.replace("?render=avatar"); return;
       }
     }

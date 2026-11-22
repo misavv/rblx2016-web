@@ -53,7 +53,7 @@ function withIsolationHeaders(response) {
 async function servePackedAsset(event) {
   const url = new URL(event.request.url);
   // A project page lives under /<repo>/, so match the path suffix.
-  const path = url.pathname.replace(/\/+$/, "");
+  const path = url.pathname.toLowerCase().replace(/\/+$/, "");
   if (!path.endsWith("/asset")) return null;
   const id = url.searchParams.get("id") || url.searchParams.get("assetId");
   if (!id || !/^\d{1,20}$/.test(id)) return null;
@@ -103,7 +103,7 @@ async function hasLocalServer() {
 // (new hats, updated meshes) comes from the Worker that holds the session.
 async function serveProxiedAsset(event) {
   const url = new URL(event.request.url);
-  const path = url.pathname.replace(/\/+$/, "");
+  const path = url.pathname.toLowerCase().replace(/\/+$/, "");
   if (!path.endsWith("/asset")) return null;
   const id = url.searchParams.get("id") || url.searchParams.get("assetId");
   if (!id || !/^\d{1,20}$/.test(id)) return null;
@@ -130,6 +130,53 @@ async function serveProxiedAsset(event) {
   }
 }
 
+// Pictures the page saves (POST __thumb?file=NAME: the Xbox menu's avatar
+// render, package pictures). webserve.py writes them to web/thumbs/; on a
+// static host they are kept here, in this browser, and served back at
+// thumbs/NAME.png|jpg, with thumbs/index.json extended to list them.
+const THUMB_CACHE = "rblx2016-thumbs";
+const THUMB_INDEX = "__rblx2016_thumb_index";
+
+async function saveThumb(event) {
+  const request = event.request;
+  if (request.method !== "POST") return null;
+  const url = new URL(request.url);
+  if (!url.pathname.toLowerCase().replace(/\/+$/, "").endsWith("/__thumb")) return null;
+  const name = url.searchParams.get("file") || "";
+  if (!/^[\w .()-]{1,120}$/.test(name)) return new Response("bad name", { status: 400 });
+  const body = new Uint8Array(await request.arrayBuffer());
+  const png = body[0] === 0x89 && body[1] === 0x50, jpg = body[0] === 0xff && body[1] === 0xd8;
+  if (!png && !jpg) return new Response("not an image", { status: 400 });
+  const ext = png ? ".png" : ".jpg";
+  const cache = await caches.open(THUMB_CACHE);
+  const key = new URL("thumbs/" + name + ext, self.registration.scope).href;
+  await cache.put(key, new Response(body, { headers: { "Content-Type": png ? "image/png" : "image/jpeg", "Cache-Control": "no-cache" } }));
+  const idxKey = new URL(THUMB_INDEX, self.registration.scope).href;
+  let index = {};
+  try { const r = await cache.match(idxKey); if (r) index = await r.json(); } catch (_) {}
+  index[name] = "thumbs/" + name + ext;
+  await cache.put(idxKey, new Response(JSON.stringify(index), { headers: { "Content-Type": "application/json" } }));
+  return new Response("ok", { headers: { "Content-Type": "text/plain" } });
+}
+
+async function serveThumb(event) {
+  const request = event.request;
+  if (request.method !== "GET") return null;
+  const url = new URL(request.url);
+  const scope = new URL(self.registration.scope);
+  if (url.origin !== scope.origin || !url.pathname.startsWith(scope.pathname + "thumbs/")) return null;
+  const cache = await caches.open(THUMB_CACHE);
+  if (url.pathname.endsWith("/thumbs/index.json")) {
+    const local = await cache.match(new URL(THUMB_INDEX, self.registration.scope).href);
+    if (!local) return null;
+    let index = {};
+    try { const r = await fetch(request); if (r.ok) index = await r.json(); } catch (_) {}
+    Object.assign(index, await local.json());
+    return new Response(JSON.stringify(index), { headers: { "Content-Type": "application/json" } });
+  }
+  return (await cache.match(url.origin + url.pathname)) || null;
+}
+
 if (typeof window === "undefined") {
   self.addEventListener("install", () => self.skipWaiting());
   self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
@@ -139,6 +186,10 @@ if (typeof window === "undefined") {
     event.respondWith(
       (async () => {
         try {
+          const saved = await saveThumb(event);
+          if (saved) return withIsolationHeaders(saved);
+          const thumb = await serveThumb(event);
+          if (thumb) return withIsolationHeaders(thumb);
           const packed = await servePackedAsset(event);
           if (packed) return withIsolationHeaders(packed);
           const proxied = await serveProxiedAsset(event);
