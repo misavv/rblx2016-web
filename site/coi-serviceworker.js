@@ -150,10 +150,17 @@ if (typeof window === "undefined") {
       })(),
     );
   });
-} else if (!window.crossOriginIsolated && window.isSecureContext && navigator.serviceWorker) {
+} else if (window.isSecureContext && navigator.serviceWorker &&
+           !/^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname)) {
+  // Hosts that send the isolation headers themselves (Vercel's vercel.json)
+  // still need the worker: it serves the packed assets (/asset/?id=N). It
+  // takes control as soon as it activates (clients.claim), so no reload.
+  // Without the headers (GitHub Pages) it also provides isolation, which
+  // needs one reload.
   window.addEventListener("load", () => {
-    if (sessionStorage.getItem("rblx2016.coi-reloaded") === "1") return;
     navigator.serviceWorker.register("coi-serviceworker.js").then((registration) => {
+      if (window.crossOriginIsolated) return;
+      if (sessionStorage.getItem("rblx2016.coi-reloaded") === "1") return;
       const reload = () => {
         sessionStorage.setItem("rblx2016.coi-reloaded", "1");
         location.reload();
@@ -162,6 +169,6 @@ if (typeof window === "undefined") {
       else if (registration.installing || registration.waiting) {
         navigator.serviceWorker.ready.then(reload);
       }
-    }).catch((error) => console.warn("[rbx2016] cross-origin isolation unavailable:", error));
+    }).catch((error) => console.warn("[rbx2016] service worker unavailable:", error));
   });
 }
