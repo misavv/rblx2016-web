@@ -680,9 +680,10 @@
   const PLACE_CATS = [
     { id: "all", label: "All" },
     { id: "popular", label: "Popular", test: (p) => /popular\)/i.test(p.name) },
-    { id: "games", label: "Games", test: (p) => p.kind !== "local" && !/classic\)|test map\)|popular\)/i.test(p.name) },
+    { id: "games", label: "Games", test: (p) => p.kind !== "local" && p.kind !== "mine" && !/classic\)|test map\)|popular\)/i.test(p.name) },
     { id: "classic", label: "Classics", test: (p) => /classic\)/i.test(p.name) },
     { id: "test", label: "Test maps", test: (p) => /test map\)/i.test(p.name) },
+    { id: "mine", label: "My Games", test: (p) => p.kind === "mine" },
     { id: "local", label: "Your files", test: (p) => p.kind === "local" },
   ];
   let placeCat = "all";
@@ -733,7 +734,7 @@
       name.textContent = p.name;
       const sub = document.createElement("span");
       sub.className = "sub";
-      sub.textContent = [p.kind === "local" ? "local file" : "", placeYear(p.name), formatSize(p.size)]
+      sub.textContent = [p.kind === "local" ? "local file" : p.kind === "mine" ? "my game" : "", placeYear(p.name), formatSize(p.size)]
         .filter(Boolean).join(" \u00b7 ");
       tile.append(name, sub);
       tile.dataset.id = p.id;
@@ -780,9 +781,13 @@
       // Surface it first and pre-select it so Play + WASD works on first launch.
       const isBaseplate = (p) => /baseplate/i.test(p.name);
       bundled.sort((a, b) => (isBaseplate(b) ? 1 : 0) - (isBaseplate(a) ? 1 : 0));
-      const locals = places.filter((p) => p.local);
+      // Games made in Bloxro Studio (kept in this browser).
+      const mine = (window.BloxroGames ? await window.BloxroGames.list() : []).map((g) => ({
+        id: "mine:" + g.id, name: g.name, kind: "mine", size: g.size, bytes: null, local: true, mineId: g.id,
+      }));
+      const locals = places.filter((p) => p.local && p.kind !== "mine");
       const previous = selected && selected.id;
-      places.splice(0, places.length, ...locals, ...bundled);
+      places.splice(0, places.length, ...mine, ...locals, ...bundled);
       selected = places.find((p) => p.id === previous)
         || places.find((p) => p.kind !== "local" && isBaseplate(p))
         || places[0] || null;
@@ -845,6 +850,12 @@
 
   async function readFileBytes(p) {
     if (p.bytes) return p.bytes;
+    if (p.mineId && window.BloxroGames) {
+      const g = await window.BloxroGames.get(p.mineId);
+      if (!g || !g.bytes) throw new Error("That game is no longer in My Games.");
+      p.bytes = g.bytes;
+      return p.bytes;
+    }
     if (!p.src) throw new Error("No place data.");
     const r = await fetch(p.src);
     if (!r.ok) throw new Error("Could not read " + p.src + " (" + r.status + ")");
@@ -1221,6 +1232,7 @@
   let engineSceneLoaded = false;  // engine printed "game loaded" (scene settled)
   let avatarAppliedCount = 0;   // engine "avatar applied" lines so far (render jobs wait on it)
   function noteLog(line) {
+    if (window.__rblxLogHook) { try { window.__rblxLogHook(line); } catch (_) {} }
     if (/avatar applied/.test(line)) avatarAppliedCount++;
     if (/RBLX2016: game loaded/.test(line)) engineSceneLoaded = true;
     recentLog.push(String(line).slice(0, 300));
@@ -2993,6 +3005,13 @@
 
   async function boot() {
     if (MP_SERVER_MODE) { document.title = "game server"; hostMain(); return; }
+    window.RBLX2016_CORE = { ensureModule, configureAssetProxy, applyRenderOptions, isEngineTrap, engineCrashed,
+      fetchPlaceList, readFileBytes, brandName };
+    if (new URLSearchParams(location.search).has("studio") && window.BloxroStudio) {
+      login.style.display = "none";
+      window.BloxroStudio.boot(window.RBLX2016_CORE);
+      return;
+    }
     try { userName.value = localStorage.getItem("rblx2016.name") || "Player1"; } catch (_) {}
     try { unlockFps.checked = localStorage.getItem("rblx2016.unlockFps") === "1"; } catch (_) {}
     try { ui2017.checked = localStorage.getItem("rblx2016.ui2017") === "1"; } catch (_) {}
@@ -3133,10 +3152,24 @@
         ? { id: "shell:world", name: "BLOXRO for Xbox", kind: "shell", src: "xboxshell/ScaledWorld.rbxl", bytes: null }
         : RENDER_MODE
           ? { id: "render:avatar", name: "Avatar render", kind: "shell", src: "xboxrender/AvatarRender.rbxlx", bytes: null }
-          : places.find((x) => x.id === "place:" + autoPlay);
+          : places.find((x) => x.id === autoPlay || x.id === "place:" + autoPlay);
       if (p) {
         selected = p;
         renderPlaces();
+        if (q.get("from") === "studio" && p.mineId) {
+          // Playtest from Bloxro Studio: leaving (or Stop) goes back to editing.
+          const back = () => { location.href = "?studio=" + encodeURIComponent(p.mineId) + (q.get("mute") ? "&mute=1" : ""); };
+          window.rblxLeaveGame = back;
+          const stopBtn = document.createElement("button");
+          stopBtn.type = "button";
+          stopBtn.id = "studioStop";
+          stopBtn.textContent = "■ Stop";
+          stopBtn.title = "Stop testing and go back to Studio";
+          stopBtn.style.cssText = "position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:200;padding:5px 14px;" +
+            "font:600 13px 'Segoe UI',system-ui,sans-serif;color:#fff;background:#c0392b;border:1px solid #8e2a1f;border-radius:4px;cursor:pointer;opacity:.9";
+          stopBtn.addEventListener("click", back);
+          document.body.appendChild(stopBtn);
+        }
         if (q.get("from") === "xbox") window.rblxLeaveGame = () => {
           // Back to the game's page in the menu, like the console app.
           const game = Number(q.get("game")) || 0;
