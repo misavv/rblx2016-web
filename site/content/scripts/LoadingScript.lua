@@ -135,6 +135,16 @@ end
 
 function InfoProvider:LoadAssets()
 	spawn(function()
+		-- [web] Offline there is no GetProductInfo: the page names the game
+		-- (GuiService:GetWebPlaceInfo() -> "name<TAB>creator").
+		local okInfo, webInfo = pcall(function() return guiService:GetWebPlaceInfo() end)
+		if okInfo and type(webInfo) == "string" and webInfo ~= "" and webInfo ~= "	" then
+			local webName, webCreator = string.match(webInfo, "^(.-)	(.*)$")
+			if webName and webName ~= "" then
+				GameAssetInfo = { Name = webName, Creator = { Name = (webCreator ~= "" and webCreator) or "ROBLOX" } }
+				return
+			end
+		end
 		if PLACEID <= 0 then
 			while game.PlaceId <= 0 do
 				wait()

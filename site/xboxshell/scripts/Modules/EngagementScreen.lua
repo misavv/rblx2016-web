@@ -124,6 +124,16 @@ local function CreateHomePane(parent)
 		end
 	end
 
+	-- [web] Back from a game (WebData.returnTo): the console app went straight
+	-- back to the menu, signed in. Authenticate once without a button press.
+	local returnHandled = false
+	local function webReturnTo()
+		local ok, data = pcall(function()
+			return game:GetService("HttpService"):JSONDecode(require(Modules:FindFirstChild("WebData")))
+		end)
+		return ok and type(data) == "table" and tonumber(data.returnTo) or 0
+	end
+
 	local function onAnyButtonPressed(gamePad)
 		AnyButtonBeganConnection = Utility.DisconnectEvent(AnyButtonBeganConnection)
 		AnyButtonEndedConnection = Utility.DisconnectEvent(AnyButtonEndedConnection)
@@ -170,6 +180,13 @@ local function CreateHomePane(parent)
 			isAuthenticating = false
 			anyButtonDown[inputObject.KeyCode] = false
 		end)
+		if not returnHandled and webReturnTo() > 0 then
+			returnHandled = true
+			AnyButtonBeganConnection = Utility.DisconnectEvent(AnyButtonBeganConnection)
+			AnyButtonEndedConnection = Utility.DisconnectEvent(AnyButtonEndedConnection)
+			AnyButtonHint.TextTransparency = 1
+			spawn(function() beginAuthenticationAsync(Enum.UserInputType.Gamepad1) end)
+		end
 	end
 
 	function this:RemoveFocus()

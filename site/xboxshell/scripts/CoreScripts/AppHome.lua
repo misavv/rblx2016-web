@@ -278,6 +278,19 @@ local function onAuthenticationSuccess(isNewLinkedAccount)
 	print("User and Event initialization finished. Opening AppHub")
 	ScreenManager:OpenScreen(AppHub);
 
+	-- [web] Back from a game: reopen that game's page, as the console app did.
+	local okWeb, webData = pcall(function()
+		return game:GetService("HttpService"):JSONDecode(require(Modules:FindFirstChild("WebData")))
+	end)
+	local returnTo = okWeb and type(webData) == "table" and tonumber(webData.returnTo) or 0
+	if returnTo > 0 then
+		local title = ""
+		for _, place in ipairs(webData.places or {}) do
+			if place.id == returnTo then title = place.title or "" end
+		end
+		EventHub:dispatchEvent(EventHub.Notifications["OpenGameDetail"], returnTo, title)
+	end
+
 	ControllerStateManager:Initialize()
 	-- retro check
 	ControllerStateManager:CheckUserConnected()

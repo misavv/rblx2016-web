@@ -155,6 +155,21 @@
     return b.parts.concat(b.accessories).map((id) => "acc:" + id).concat(["body:194,194,194,194,194,194"]).join(";");
   }
 
+  // "A Bridge too far (2010 classic)" -> "A Bridge too far", as the menu shows it.
+  // "&game=<menu id>" while coming back from a game (kept across the avatar
+  // render detour), so the menu can reopen that game's page.
+  function returnGameParam() {
+    const g = Number(new URLSearchParams(location.search).get("game")) || 0;
+    return g ? "&game=" + g : "";
+  }
+  function placeTitle(name) {
+    const m = /^(.*?)\s*\((\d{4})[^)]*\)\s*$/.exec(name || "");
+    return m ? m[1] : (name || "");
+  }
+  function setPlaceInfo(mod, name, creator) {
+    if (typeof mod._rblx_set_place_info !== "function") return;
+    try { mod.ccall("rblx_set_place_info", null, ["string", "string"], [placeTitle(name), creator || "ROBLOX"]); } catch (_) {}
+  }
   async function loadShellPack(mod) {
     if (mod.__xboxshell) return true;
     try {
@@ -205,6 +220,8 @@
         inventory: inv,
         catalog: bundles.filter((b) => !owned.has(b.id)).map((b) => ({ id: b.id, name: b.name, creator: b.creator })),
         wearing: wearingBundle ? wearingBundle.id : null,
+        // Coming back from a game: the menu reopens that game's page.
+        returnTo: Number(new URLSearchParams(location.search).get("game")) || 0,
         thumbs,
       };
       // The shell shows the avatar as a server-rendered thumbnail; ours is
@@ -266,7 +283,7 @@
   }
   // ?render=bundles: a picture for every avatar package that has none yet.
   async function runBundleRender(mod) {
-    const finish = () => location.replace("?shell=xbox&norender=1");
+    const finish = () => location.replace("?shell=xbox&norender=1" + returnGameParam());
     try {
       const bundles = await loadBundles();
       let pics = {};
@@ -385,7 +402,7 @@
         // Leave the old picture and try again next time the menu opens.
         try { localStorage.removeItem("rblx2016.xbox.avatarRendered"); } catch (_) {}
         if (RENDER_EMBED) { window.parent.postMessage({ rblxAvatarRendered: "failed" }, location.origin); return; }
-        location.replace("?shell=xbox&norender=1");
+        location.replace("?shell=xbox&norender=1" + returnGameParam());
         return;
       }
       // Square, centred crop at the size the shell asks for: ThumbnailLoader.Sizes.Medium (250x250).
@@ -452,7 +469,8 @@
         join.style.cssText = "position:fixed;inset:0;z-index:2147483646;background:#222 url(content/textures/loading/darkLoadingTexture.png) 0 0 / 512px 512px repeat";
         document.body.appendChild(join);
         for (const c of Object.values((mod.__rbxAudio || { channels: {} }).channels)) { try { c.audio.pause(); } catch (_) {} }
-        setTimeout(() => { location.href = "?play=" + encodeURIComponent(p.file) + "&from=xbox"; }, 50);
+        // &game=<menu id>: leaving the game returns to this game's page.
+        setTimeout(() => { location.href = "?play=" + encodeURIComponent(p.file) + "&from=xbox&game=" + p.id; }, 50);
       } else if (c.cmd === "favorite") {
         const p = ps.find((x) => x.id === Number(c.placeId));
         if (!p) return;
@@ -1062,16 +1080,65 @@
     xboxCover.id = "xboxCover";
     const base = "position:fixed;inset:0;z-index:2147483646;transition:opacity .35s ease;";
     if (XBOX_FLOW === "join") {
-      xboxCover.style.cssText = base + "background:#222 url(content/textures/loading/darkLoadingTexture.png) 0 0 / 512px 512px repeat;";
+      // The Xbox One client's game-join screen, laid out exactly like the
+      // ten-foot branch of the engine's LoadingScript (same pixels, art and
+      // font), so the hand-over to the engine's own screen is seamless:
+      // "Cancel (B)" top right, the game's name and "By <creator>" bottom
+      // left, the spinner bottom right.
+      xboxCover.style.cssText = base + "background:#222 url(content/textures/loading/darkLoadingTexture.png) 0 0 / 512px 512px repeat;" +
+        "font-family:RblxSourceSans,'Source Sans Pro','Segoe UI',sans-serif;color:#fff;overflow:hidden";
+      const q = new URLSearchParams(location.search);
+      const title = placeTitle((q.get("play") || "").replace(/\.rbxlx?$/i, ""));
+      const stroke = "text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000";
+      const el = (tag, css, text) => { const e = document.createElement(tag); e.style.cssText = "position:absolute;" + css; if (text != null) e.textContent = text; return e; };
+      const font = document.createElement("style");
+      font.textContent = "@font-face{font-family:RblxSourceSans;src:url(content/fonts/SourceSansPro-Regular.ttf)}" +
+        "@keyframes rblxSpin{to{transform:rotate(360deg)}}";
+      const bIcon = el("img", "right:32px;top:32px;width:83px;height:83px");
+      bIcon.src = "content/textures/ui/Shell/ButtonIcons/BButton.png"; bIcon.alt = "B";
+      const cancel = el("div", "right:131px;top:64px;transform:translateY(-50%);font-size:36px;line-height:1;white-space:nowrap", "Cancel");
+      const info = el("div", "left:100px;bottom:40px;width:40%;height:110px");
+      const name = el("div", "left:0;top:0;width:100%;height:80px;display:flex;align-items:flex-end;font-size:48px;line-height:1.05;" + stroke, title);
+      const by = el("div", "left:0;top:80px;height:30px;font-size:28px;line-height:30px;" + stroke, "By");
+      const rIcon = el("img", "left:38px;top:80px;width:30px;height:30px");
+      rIcon.src = "content/textures/ui/Shell/Icons/RobloxIcon32.png"; rIcon.alt = "";
+      const creator = el("div", "left:72px;top:80px;height:30px;font-size:28px;line-height:30px;white-space:nowrap;" + stroke, "ROBLOX");
+      info.append(name, by, rIcon, creator);
+      const spin = el("img", "right:105px;bottom:45px;width:140px;height:140px;animation:rblxSpin 1.2s linear infinite");
+      spin.src = "content/textures/loading/loadingCircle.png"; spin.alt = "";
+      xboxCover.append(font, bIcon, cancel, info, spin);
+      // B / Esc cancels the join, back to the game's page, as on the console.
+      const onKey = (e) => {
+        if (!xboxCover) { window.removeEventListener("keydown", onKey, true); return; }
+        if (e.key === "Escape" || e.key === "Backspace" || e.key === "b" || e.key === "B") {
+          e.preventDefault();
+          cancel.textContent = "Canceling...";
+          bIcon.remove();
+          cancel.style.right = "32px";
+          const game = Number(q.get("game")) || 0;
+          location.href = "?shell=xbox" + (game ? "&game=" + game : "");
+        }
+      };
+      window.addEventListener("keydown", onKey, true);
     } else {
       xboxCover.style.cssText = base + "background:#0b1a24 url(xboxshell/textures/Background/Home_screen_01.png) center / cover no-repeat;" +
         "display:flex;align-items:center;justify-content:center;";
       const tint = document.createElement("div");
       tint.style.cssText = "position:absolute;inset:0;background:rgb(20,43,60);opacity:.7";
       const logo = document.createElement("img");
-      logo.src = "xboxshell/textures/Icons/ROBLOXSplashLogo.png";
-      logo.alt = "ROBLOX";
-      logo.style.cssText = "position:relative;width:min(46vw,594px)";
+      if (new URLSearchParams(location.search).get("game")) {
+        // Back from a game: no launch splash, just the menu's spinner.
+        const spin = document.createElement("style");
+        spin.textContent = "@keyframes rblxSpin{to{transform:rotate(360deg)}}";
+        logo.src = "xboxshell/textures/Icons/LoadingSpinner@1080.png";
+        logo.alt = "";
+        logo.style.cssText = "position:relative;width:120px;height:120px;animation:rblxSpin 1s linear infinite";
+        xboxCover.append(spin);
+      } else {
+        logo.src = "xboxshell/textures/Icons/ROBLOXSplashLogo.png";
+        logo.alt = "ROBLOX";
+        logo.style.cssText = "position:relative;width:min(46vw,594px)";
+      }
       xboxCover.append(tint, logo);
     }
     (document.body || document.documentElement).appendChild(xboxCover);
@@ -1310,6 +1377,9 @@
       }
       // rbxassetid:// resolves to <origin>/asset/?id=N; serve.py proxies that
       // to assetdelivery and caches the bytes.
+      // The loading screen shows the game's name and creator (the real client
+      // asked Roblox's servers; here the page knows them).
+      if (!SHELL_MODE && !RENDER_MODE && selected) setPlaceInfo(mod, selected.name, selected.local ? (userName.value.trim() || "Player1") : "ROBLOX");
       const rc = mod.ccall("rblx_start_place", "number",
         ["number", "number", "string", "string", "number"],
         // Must include the subpath: a project page lives under /<repo>/ and
@@ -1592,6 +1662,7 @@
       if (!m.ip) setStatus("The host left the game.", true);
     });
     const userId = conn.ip & 0xffffff;
+    setPlaceInfo(mod, (conn.info && conn.info.place) || "", "ROBLOX");
     const rc = mod.ccall("rblx_join_start", "number",
       ["number", "number", "number", "string", "string", "number"],
       [hostIp >>> 0, window.RblxNet.GAME_PORT, userId, name, new URL(".", location.href).href, touchDevice ? 1 : 0]);
@@ -3011,7 +3082,7 @@
             new Promise((r) => setTimeout(r, 5000)),
           ]);
         }
-        location.replace("?render=avatar"); return;
+        location.replace("?render=avatar" + returnGameParam()); return;
       }
     }
     const autoPlay = q.get("play") || (SHELL_MODE ? "shell" : null) || (RENDER_MODE ? "render" : null);
@@ -3026,7 +3097,11 @@
       if (p) {
         selected = p;
         renderPlaces();
-        if (q.get("from") === "xbox") window.rblxLeaveGame = () => { location.href = "?shell=xbox"; };
+        if (q.get("from") === "xbox") window.rblxLeaveGame = () => {
+          // Back to the game's page in the menu, like the console app.
+          const game = Number(q.get("game")) || 0;
+          location.href = "?shell=xbox" + (game ? "&game=" + game : "");
+        };
         play();
       } else {
         setStatus("That game isn't in the place list.", true);
