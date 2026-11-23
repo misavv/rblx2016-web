@@ -50,6 +50,12 @@ function withIsolationHeaders(response) {
   });
 }
 
+function isAssetRequest(event) {
+  const url = new URL(event.request.url);
+  return event.request.method === "GET" && url.pathname.toLowerCase().replace(/\/+$/, "").endsWith("/asset") &&
+    /^\d{1,20}$/.test(url.searchParams.get("id") || url.searchParams.get("assetId") || "");
+}
+
 async function servePackedAsset(event) {
   const url = new URL(event.request.url);
   // A project page lives under /<repo>/, so match the path suffix.
@@ -115,6 +121,9 @@ async function serveProxiedAsset(event) {
   if (cached) return cached;
   try {
     const response = await fetch(base.replace(/\/+$/, "") + "/asset?id=" + id);
+    // A proxy that refuses (expired session: 401/403) won't start working
+    // mid-visit; stop asking it, so missing assets fail at once.
+    if (response.status === 401 || response.status === 403) proxyBase = "";
     if (!response.ok) return null;
     const body = await response.arrayBuffer();
     const stored = new Response(body, {
@@ -194,6 +203,9 @@ if (typeof window === "undefined") {
           if (packed) return withIsolationHeaders(packed);
           const proxied = await serveProxiedAsset(event);
           if (proxied) return withIsolationHeaders(proxied);
+          // Not bundled and no proxy: answer at once instead of asking the
+          // static host (which has no /asset route) for every retry.
+          if (isAssetRequest(event)) return withIsolationHeaders(new Response("", { status: 404 }));
           return withIsolationHeaders(await fetch(request));
         } catch (_) {
           return Response.error();

@@ -6,6 +6,15 @@
   const MAX_PLACE_BYTES = 32 * 1024 * 1024;
   const $ = (id) => document.getElementById(id);
 
+  // ?mute=1: silence all game/menu sound for the rest of this tab (testing).
+  try {
+    if (new URLSearchParams(location.search).get("mute") === "1") sessionStorage.setItem("rblx2016.mute", "1");
+    if (sessionStorage.getItem("rblx2016.mute") === "1") {
+      const media = HTMLMediaElement.prototype, play = media.play;
+      media.play = function () { this.muted = true; return play.apply(this, arguments); };
+    }
+  } catch (_) {}
+
   // Phones/tablets use the stock 2016 touch controls; a touchscreen laptop
   // with a fine pointer stays on keyboard + mouse.
   const touchDevice =
@@ -1163,7 +1172,11 @@
         if (XBOX_FLOW === "join") {
           ready = mod.ccall("rblx_loading_gui_ready", "number", [], []) === 1;
         } else {
-          ready = mod.ccall("rblx_frame_count", "number", [], []) - startFrames > 45;
+          // The menu runs over a 3D world. Keep the splash until the engine
+          // says the scene has settled (meshes, textures, sky), so the world
+          // never visibly assembles itself while assets stream in on the web.
+          ready = mod.ccall("rblx_frame_count", "number", [], []) - startFrames > 45 &&
+            (engineSceneLoaded || performance.now() - t0 > 45000);
         }
       } catch (_) { ready = true; }
       // Give the engine a moment to paint the screen underneath first.
@@ -1180,9 +1193,11 @@
   // local server only (webserve.py /__crashlog -> _webport/crashlog.jsonl);
   // on other hosts the request just fails quietly.
   const recentLog = []; window.__rblxLog = recentLog;
+  let engineSceneLoaded = false;  // engine printed "game loaded" (scene settled)
   let avatarAppliedCount = 0;   // engine "avatar applied" lines so far (render jobs wait on it)
   function noteLog(line) {
     if (/avatar applied/.test(line)) avatarAppliedCount++;
+    if (/RBLX2016: game loaded/.test(line)) engineSceneLoaded = true;
     recentLog.push(String(line).slice(0, 300));
     if (recentLog.length > 60) recentLog.shift();
   }
