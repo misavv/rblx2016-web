@@ -1,4 +1,4 @@
-// Multiplayer relay for the Roblox 2016 web port (Node.js).
+// Multiplayer relay for the Bloxro 2016 web port (Node.js).
 // Runs anywhere Node runs (Render, Fly.io, Railway, a VPS, your PC).
 //   npm install && node server.js        (PORT env var, default 8787)
 // Point the site at it with mp-relay.json: {"url": "wss://your-relay.example"}
@@ -15,7 +15,7 @@ const rooms = new Map();
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Roblox 2016 multiplayer relay: OK\n");
+  res.end("Bloxro 2016 multiplayer relay: OK\n");
 });
 const wss = new WebSocketServer({ noServer: true, maxPayload: 4 << 20 });
 

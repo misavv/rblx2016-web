@@ -17,13 +17,13 @@ end
 local SpecialChatColors = {
 	Groups = {
 		{
-			--- ROBLOX Interns group
+			--- BLOXRO Interns group
 			GroupId = 2868472,
 			Rank = 100,
 			ChatColor = Color3.new(175/255, 221/255, 1),
 		},
 		{
-			--- ROBLOX Admins group
+			--- BLOXRO Admins group
 			GroupId = 1200769,
 			ChatColor = Color3.new(1, 215/255, 0),
 		},

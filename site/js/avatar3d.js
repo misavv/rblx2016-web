@@ -6,13 +6,13 @@
  *   const v = Avatar3D.create(canvas);
  *   v.setAvatar({ body:[6 hex], shirt, pants, tshirt, face, accessories:[itemUrl], brickHex });
  *
- * Coordinates are Roblox's: +Y up, the character faces -Z, its right is +X.
+ * Coordinates are Bloxro's: +Y up, the character faces -Z, its right is +X.
  */
 (function () {
   "use strict";
 
   // ------------------------------------------------------------ CFrame math
-  // Roblox convention: world = p + R*v, R stored row-major (R00 R01 R02 ...).
+  // Bloxro convention: world = p + R*v, R stored row-major (R00 R01 R02 ...).
   const ID3 = [1, 0, 0, 0, 1, 0, 0, 0, 1];
   const CF = (x, y, z, r) => ({ p: [x || 0, y || 0, z || 0], r: r || ID3.slice() });
   function cfMul(a, b) {
@@ -66,7 +66,7 @@
   function geo(n) { return { pos: new Float32Array(n * 3), nrm: new Float32Array(n * 3), uv: new Float32Array(n * 2), count: n }; }
 
   // A box whose faces sample rectangles of a W x H texture (pixel rects), laid
-  // out like Roblox's clothing template net. Front is -Z, the part's right +X.
+  // out like Bloxro's clothing template net. Front is -Z, the part's right +X.
   function box(sx, sy, sz, rects, W, H) {
     const hx = sx / 2, hy = sy / 2, hz = sz / 2;
     // Each face: normal, then corners top-left, top-right, bottom-left, bottom-right.

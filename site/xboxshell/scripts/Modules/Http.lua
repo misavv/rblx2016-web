@@ -27,7 +27,7 @@ for _, id in pairs(Data.favorites or {}) do favorites[id] = true end
 
 local function gameEntry(p)
 	return {
-		CreatorID = 1, CreatorName = p.creator or "ROBLOX", CreatorUrl = "",
+		CreatorID = 1, CreatorName = p.creator or "BLOXRO", CreatorUrl = "",
 		Plays = p.plays or 0, Price = 0, ProductID = 0, IsOwned = true,
 		IsVotingEnabled = true, TotalUpVotes = 0, TotalDownVotes = 0, TotalBought = 0,
 		UniverseID = p.id, HasErrorOcurred = false,
@@ -87,7 +87,7 @@ function Http.GetAssetThumbnailFinalAsync(assetId)
 	return { Url = "", Final = true }
 end
 -- The avatar picture is rendered by the engine (the page's ?render=avatar job,
--- like Roblox's thumbnail servers did for the console). After a wear the page
+-- like Bloxro's thumbnail servers did for the console). After a wear the page
 -- re-renders it and hands the new picture's URL back through workspace.MP_IN.
 local avatarIn = workspace:FindFirstChild("MP_IN")
 if not avatarIn then
@@ -137,7 +137,7 @@ function Http.GetGameDetailsAsync(placeId)
 		Created = p.year and ("1/1/" .. p.year) or "", Updated = p.year and ("1/1/" .. p.year) or "",
 		FavoritedCount = 0, Url = "", ReportAbuseUrl = "", IsFavoritedByUser = favorites[p.id] == true,
 		IsCreatedByUser = false, VisitedCount = p.plays or 0, MaxPlayers = p.maxPlayers or 12,
-		Builder = p.creator or "ROBLOX", BuilderId = 1, BuilderUrl = "", IsPlayable = true,
+		Builder = p.creator or "BLOXRO", BuilderId = 1, BuilderUrl = "", IsPlayable = true,
 		ReasonProhibited = "None", ReasonProhibitedMessage = "", IsBuildersClubOnly = false,
 		IsCopyLocked = false, IsPersonalServer = false, IsPersonalServerOverlay = false,
 		BuildersClubOverlay = "", PlayButtonType = "PlayButton", AssetGenre = "All",
@@ -158,7 +158,7 @@ function Http.GetRecommendedGamesAsync(currentPlaceId)
 	for i = 1, math.min(6, #same) do
 		local o = same[i]
 		out[i] = { PlaceId = o.id, GameName = o.title, GameSeoUrl = "",
-			Creator = { CreatorName = o.creator or "ROBLOX", CreatorTargetId = 1, CreatorType = 0 },
+			Creator = { CreatorName = o.creator or "BLOXRO", CreatorTargetId = 1, CreatorType = 0 },
 			GameThumbnail = { Url = "", IsFinal = true, AssetId = o.id, AssetType = 1 }, ImageId = o.id }
 	end
 	return out
@@ -210,7 +210,7 @@ function Http.GetUserOwnedPackagesAsync(userId, currentPage)
 		local it = owned[i]
 		items[#items + 1] = {
 			Item = { AssetId = it.id, Name = it.name, AssetType = 32 },
-			Creator = { Id = 1, Name = it.creator or "ROBLOX", Type = 1 },
+			Creator = { Id = 1, Name = it.creator or "BLOXRO", Type = 1 },
 			Product = { PriceInRobux = 0, PriceInTickets = nil, IsForSale = true, IsPublicDomain = true,
 				IsResellable = false, IsLimitedEdition = false, IsUnique = false, IsExpired = false },
 			Thumbnail = { Final = true, Url = it.thumb and (BaseUrl .. it.thumb) or "" },
@@ -241,7 +241,7 @@ function Http.GetXboxProductsAsync(startIndex, count)
 	for i = startIndex + 1, math.min(#all, startIndex + count) do
 		local it = all[i]
 		products[#products + 1] = { AssetTypeId = 32, IconImageAssetId = 0, IsNew = false, ProductId = it.id,
-			MinimumMembershipLevel = 0, Creator = { Name = it.creator or "ROBLOX", Id = 1 }, IsLimited = false,
+			MinimumMembershipLevel = 0, Creator = { Name = it.creator or "BLOXRO", Id = 1 }, IsLimited = false,
 			ContentRatingTypeId = 0, AssetId = it.id, IsPublicDomain = true, Name = it.name, IsForSale = true,
 			Description = it.name, PriceInRobux = 0, Sales = 0 }
 	end

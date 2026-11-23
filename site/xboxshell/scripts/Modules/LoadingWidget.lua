@@ -2,7 +2,7 @@
 			// LoadingWidget.lua
 
 			// Created by Kip Turner
-			// Copyright Roblox 2015
+			// Copyright Bloxro 2015
 ]]
 
 

@@ -51,7 +51,7 @@ ThumbnailLoader.AssetType = {
 }
 
 --[[
-	imageObject - a roblox gui image object (ImageLabel, ImageButton)
+	imageObject - a bloxro gui image object (ImageLabel, ImageButton)
 	assetId 	- the id of the asset you want an image for
 	size 		- a ThumbnailLoader.Sizes
 	assetType 	- a ThumbnailLoader.AssetType

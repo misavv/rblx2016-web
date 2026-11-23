@@ -116,7 +116,7 @@ function AccountManager:SetRobloxCredentialsAsync(accountName, password)
 	return result
 end
 
--- used when creating a new roblox account that is linked to the users xbox account
+-- used when creating a new bloxro account that is linked to the users xbox account
 function AccountManager:GenerateAccountAsync(accountName, password)
 	local result = AccountManager:SignInAsync(Enum.UserInputType.Gamepad1)
 	if result == AccountManager.AuthResults.Success then
@@ -126,7 +126,7 @@ function AccountManager:GenerateAccountAsync(accountName, password)
 	return result
 end
 
--- called when user has roblox credentials
+-- called when user has bloxro credentials
 function AccountManager:UnlinkAccountAsync()
 	local success, result = pcall(function()
 		-- PlatformService may not exist on studio platform

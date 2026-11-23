@@ -1,4 +1,4 @@
--- Copyright ROBLOX 2015
+-- Copyright BLOXRO 2015
 --[[
 		Filename: GamePane.lua
 		Written By: Kyler Mulherin, Jason Roth

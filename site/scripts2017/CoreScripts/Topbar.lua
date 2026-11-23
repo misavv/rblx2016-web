@@ -25,7 +25,7 @@ end
 --[[
 	// FileName: Topbar.lua
 	// Written by: SolarCrane
-	// Description: Code for lua side Top Menu items in ROBLOX.
+	// Description: Code for lua side Top Menu items in BLOXRO.
 ]]
 
 --[[ FFLAG VALUES ]]

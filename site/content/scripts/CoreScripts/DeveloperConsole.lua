@@ -573,7 +573,7 @@ function initializeDeveloperConsole()
 		FontSize = Enum.FontSize.Size18;
 		Text = "Server Console";
 		TextColor3 = Color3.new(1, 1, 1);
-		Text = "Roblox Developer Console";
+		Text = "Bloxro Developer Console";
 		TextYAlignment = Enum.TextYAlignment.Top;
 	}
 	

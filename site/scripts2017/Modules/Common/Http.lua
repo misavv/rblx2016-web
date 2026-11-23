@@ -1,7 +1,7 @@
 --[[
                 // Http.lua
 
-                // API for making http calls into roblox endpoints
+                // API for making http calls into bloxro endpoints
 ]]
 local HttpService = game:GetService('HttpService')
 local HttpRbxApiService = game:GetService('HttpRbxApiService')

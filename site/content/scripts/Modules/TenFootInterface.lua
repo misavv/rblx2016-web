@@ -2,7 +2,7 @@
 		Filename: TenFootInterface.lua
 		Written by: jeditkacheff
 		Version 1.0
-		Description: Setups up some special UI for ROBLOX TV gaming
+		Description: Setups up some special UI for BLOXRO TV gaming
 --]]
 -------------- CONSTANTS --------------
 local HEALTH_GREEN_COLOR = Color3.new(27/255, 252/255, 107/255)

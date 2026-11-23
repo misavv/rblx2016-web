@@ -1,4 +1,4 @@
---Dialog: 3D dialogs for ROBLOX in VR
+--Dialog: 3D dialogs for BLOXRO in VR
 --written by 0xBAADF00D
 --6/30/2016
 

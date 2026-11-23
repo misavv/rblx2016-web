@@ -1,7 +1,7 @@
 --[[ 
 	This script controls the gui the player sees in regards to his or her health.
 	Can be turned with Game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health,false)
-	Copyright ROBLOX 2014. Written by Ben Tkacheff.
+	Copyright BLOXRO 2014. Written by Ben Tkacheff.
 --]]
 
 ---------------------------------------------------------------------

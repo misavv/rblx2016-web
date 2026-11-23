@@ -1,4 +1,4 @@
-/* Web port of the 2015-2017 ROBLOX Xbox One app shell (PlatformContent/durango
+/* Web port of the 2015-2017 BLOXRO Xbox One app shell (PlatformContent/durango
    scripts/ui). Layout and colours follow GlobalSettings.lua and the pane modules;
    the stage is the shell's 1920x1080 canvas, scaled to the window. */
 @font-face { font-family: "SourceSans"; src: url("../content/fonts/SourceSansPro-Regular.ttf"); font-weight: 400; }

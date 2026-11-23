@@ -3,8 +3,8 @@
   {
    "id": 900000311,
    "bundleId": 311,
-   "name": "Robloxian 2.0",
-   "creator": "ROBLOX",
+   "name": "Bloxroian 2.0",
+   "creator": "BLOXRO",
    "parts": [
     27112025,
     27112039,
@@ -18,7 +18,7 @@
    "id": 900000279,
    "bundleId": 279,
    "name": "Mr. Robot",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     54116290,
     54116338,
@@ -32,7 +32,7 @@
    "id": 900000299,
    "bundleId": 299,
    "name": "Superhero",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     32336059,
     32336117,
@@ -46,7 +46,7 @@
    "id": 900000238,
    "bundleId": 238,
    "name": "Man",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     86500008,
     86500036,
@@ -62,7 +62,7 @@
    "id": 900000239,
    "bundleId": 239,
    "name": "Woman",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     86499666,
     86499698,
@@ -77,8 +77,8 @@
   {
    "id": 900000109,
    "bundleId": 109,
-   "name": "ROBLOX Boy",
-   "creator": "ROBLOX",
+   "name": "BLOXRO Boy",
+   "creator": "BLOXRO",
    "parts": [
     376530220,
     376531012,
@@ -91,8 +91,8 @@
   {
    "id": 900000108,
    "bundleId": 108,
-   "name": "ROBLOX Girl",
-   "creator": "ROBLOX",
+   "name": "BLOXRO Girl",
+   "creator": "BLOXRO",
    "parts": [
     376547767,
     376547633,
@@ -106,7 +106,7 @@
    "id": 900000309,
    "bundleId": 309,
    "name": "Bear Suit",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     27132957,
     27132990,
@@ -120,7 +120,7 @@
    "id": 900000310,
    "bundleId": 310,
    "name": "Mr. Roboto",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     27121265,
     27121306,
@@ -134,7 +134,7 @@
    "id": 900000308,
    "bundleId": 308,
    "name": "Action Figure",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     27402580,
     27402546,
@@ -148,7 +148,7 @@
    "id": 900000306,
    "bundleId": 306,
    "name": "Pirate Swashbuckler",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     27847359,
     27847382,
@@ -162,7 +162,7 @@
    "id": 900000305,
    "bundleId": 305,
    "name": "Spaceman",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     28269799,
     28269842,
@@ -176,7 +176,7 @@
    "id": 900000304,
    "bundleId": 304,
    "name": "CoolKid McAwesome",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     28279160,
     28279217,
@@ -190,7 +190,7 @@
    "id": 900000303,
    "bundleId": 303,
    "name": "Magnabot",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     28675908,
     28675922,
@@ -204,7 +204,7 @@
    "id": 900000301,
    "bundleId": 301,
    "name": "The Katana Kid",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     30255487,
     30255524,
@@ -218,7 +218,7 @@
    "id": 900000298,
    "bundleId": 298,
    "name": "Gunslinger",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     32357663,
     32357631,
@@ -232,7 +232,7 @@
    "id": 900000296,
    "bundleId": 296,
    "name": "Bro",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     33378750,
     33378793,
@@ -246,7 +246,7 @@
    "id": 900000295,
    "bundleId": 295,
    "name": "Skeleton",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     36781360,
     36781407,
@@ -260,7 +260,7 @@
    "id": 900000294,
    "bundleId": 294,
    "name": "Mummy",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     37152768,
     37152797,
@@ -274,7 +274,7 @@
    "id": 900000293,
    "bundleId": 293,
    "name": "Vampire",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     37695337,
     37695297,
@@ -288,7 +288,7 @@
    "id": 900000292,
    "bundleId": 292,
    "name": "Werewolf",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     37695732,
     37695773,
@@ -302,7 +302,7 @@
    "id": 900000291,
    "bundleId": 291,
    "name": "Zombie",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     37754511,
     37754562,
@@ -316,7 +316,7 @@
    "id": 900000290,
    "bundleId": 290,
    "name": "Football Player",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     39976703,
     39976829,
@@ -330,7 +330,7 @@
    "id": 900000289,
    "bundleId": 289,
    "name": "Elf",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     41797408,
     41797445,
@@ -344,7 +344,7 @@
    "id": 900000288,
    "bundleId": 288,
    "name": "Santa Claus",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     41850825,
     41850868,
@@ -358,7 +358,7 @@
    "id": 900000287,
    "bundleId": 287,
    "name": "Snowman",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     42264717,
     42264794,
@@ -372,7 +372,7 @@
    "id": 900000286,
    "bundleId": 286,
    "name": "Gingerbread Man",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     42588316,
     42588371,
@@ -386,7 +386,7 @@
    "id": 900000284,
    "bundleId": 284,
    "name": "Penguin",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     46358991,
     46359040,
@@ -400,7 +400,7 @@
    "id": 900000281,
    "bundleId": 281,
    "name": "Bunny",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     50383074,
     50383126,
@@ -414,7 +414,7 @@
    "id": 900000280,
    "bundleId": 280,
    "name": "Gentleman Robot",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     53980828,
     53980889,
@@ -428,7 +428,7 @@
    "id": 900000278,
    "bundleId": 278,
    "name": "Bounty Hunter",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     54656802,
     54656852,
@@ -442,7 +442,7 @@
    "id": 900000276,
    "bundleId": 276,
    "name": "Agent 53",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     55717271,
     55717330,
@@ -456,7 +456,7 @@
    "id": 900000274,
    "bundleId": 274,
    "name": "Redcliff Knight",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     56559353,
     56559428,
@@ -470,7 +470,7 @@
    "id": 900000271,
    "bundleId": 271,
    "name": "Korblox Warrior",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     59091045,
     59091083,
@@ -484,7 +484,7 @@
    "id": 900000268,
    "bundleId": 268,
    "name": "Iron Armor",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     60474921,
     60474942,
@@ -498,7 +498,7 @@
    "id": 900000267,
    "bundleId": 267,
    "name": "Space Trooper",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     61888667,
     61888692,
@@ -512,7 +512,7 @@
    "id": 900000263,
    "bundleId": 263,
    "name": "Frankenstein",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     64087535,
     64087575,
@@ -526,7 +526,7 @@
    "id": 900000256,
    "bundleId": 256,
    "name": "Korblox General",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     68539149,
     68539179,
@@ -540,7 +540,7 @@
    "id": 900000255,
    "bundleId": 255,
    "name": "Captain Zombie",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     68602565,
     68602574,
@@ -554,7 +554,7 @@
    "id": 900000254,
    "bundleId": 254,
    "name": "Ice Golem",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     68602876,
     68602886,
@@ -568,7 +568,7 @@
    "id": 900000244,
    "bundleId": 244,
    "name": "Korblox Mage",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     77518564,
     77518616,
@@ -582,7 +582,7 @@
    "id": 900000243,
    "bundleId": 243,
    "name": "The Overseer",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     81725326,
     81725366,
@@ -596,7 +596,7 @@
    "id": 900000241,
    "bundleId": 241,
    "name": "Knightmare",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     81728490,
     81728558,
@@ -610,7 +610,7 @@
    "id": 900000240,
    "bundleId": 240,
    "name": "Mystic Vizier",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     81733976,
     81734018,
@@ -624,7 +624,7 @@
    "id": 900000242,
    "bundleId": 242,
    "name": "Darkest Assassin",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     81727651,
     81727718,
@@ -640,7 +640,7 @@
    "id": 900000247,
    "bundleId": 247,
    "name": "Undercover Superhero",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     76215493,
     76215577,
@@ -654,7 +654,7 @@
    "id": 900000225,
    "bundleId": 225,
    "name": "Firefighter",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     101743715,
     107451302,
@@ -670,7 +670,7 @@
    "id": 900000218,
    "bundleId": 218,
    "name": "Officer Blox",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     116791691,
     116791731,
@@ -686,7 +686,7 @@
    "id": 900000219,
    "bundleId": 219,
    "name": "The Crook",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     116791307,
     116791347,
@@ -701,8 +701,8 @@
   {
    "id": 900000187,
    "bundleId": 187,
-   "name": "Team ROBLOX",
-   "creator": "ROBLOX",
+   "name": "Team BLOXRO",
+   "creator": "BLOXRO",
    "parts": [
     142463567,
     142463618,
@@ -716,7 +716,7 @@
    "id": 900000192,
    "bundleId": 192,
    "name": "Korblox Deathspeaker",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     139607570,
     139607625,
@@ -732,7 +732,7 @@
    "id": 900000123,
    "bundleId": 123,
    "name": "Dark Skeleton",
-   "creator": "ROBLOX",
+   "creator": "BLOXRO",
    "parts": [
     302063900,
     302063962,

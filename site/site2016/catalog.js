@@ -15,7 +15,7 @@
   };
   const TITLE = { 9: "Hats", 10: "Faces", 12: "Shirts", 13: "T-Shirts", 14: "Pants", 15: "Heads",
     3: "Clothing", 4: "Body Parts", 11: "Packages", 5: "Gear" };
-  const state = { types: null, title: "Featured Items on ROBLOX", keyword: "", page: 0 };
+  const state = { types: null, title: "Featured Items on BLOXRO", keyword: "", page: 0 };
 
   function card(item) {
     const owned = S.owns(item.id);
@@ -33,7 +33,7 @@
       '<div class="robux-price"><span class="NotAPrice">' + (owned ? "Owned" : "Free") + '</span></div>' +
       '</div>' +
       '<div class="CatalogHoverContent">' +
-      '<div><span class="CatalogItemInfoLabel">Creator:</span> <span class="HoverInfo notranslate"><a>' + esc(item.creator || "ROBLOX") + '</a></span></div>' +
+      '<div><span class="CatalogItemInfoLabel">Creator:</span> <span class="HoverInfo notranslate"><a>' + esc(item.creator || "BLOXRO") + '</a></span></div>' +
       (created ? '<div><span class="CatalogItemInfoLabel">Updated:</span> <span class="HoverInfo">' + esc(created) + '</span></div>' : "") +
       '<div><span class="CatalogItemInfoLabel">Price:</span> <span class="HoverInfo">Free</span></div>' +
       '</div>' +
@@ -90,7 +90,7 @@
       '<div class="local-item-thumb"><img alt="" src="' + esc(S.thumb(item)) + '"></div>' +
       '<div class="local-item-info">' +
       '<h2 class="notranslate">' + esc(item.name) + '</h2>' +
-      '<div class="local-item-by">By <a>' + esc(item.creator || "ROBLOX") + '</a></div>' +
+      '<div class="local-item-by">By <a>' + esc(item.creator || "BLOXRO") + '</a></div>' +
       '<table class="local-item-meta"><tr><td>Price:</td><td class="local-free">Free</td></tr>' +
       '<tr><td>Type:</td><td>' + esc(item.type.replace("tshirt", "t-shirt")) + '</td></tr>' +
       (item.created ? '<tr><td>Created:</td><td>' + esc(item.created) + '</td></tr>' : "") + '</table>' +
@@ -144,7 +144,7 @@
         } else if (cat === "4") {
           state.types = TYPE_MAP[4]; state.title = "Body Parts";
         } else {
-          state.types = null; state.title = a.textContent.trim() === "All Categories" ? "All Categories" : "Featured Items on ROBLOX";
+          state.types = null; state.title = a.textContent.trim() === "All Categories" ? "All Categories" : "Featured Items on BLOXRO";
         }
         render();
       });

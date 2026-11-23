@@ -1,4 +1,4 @@
-// Makes place files saved by newer Roblox Studio readable by the 2016 loader.
+// Makes place files saved by newer Bloxro Studio readable by the 2016 loader.
 //
 // The 2016 binary reader (SerializerBinary.cpp) only knows LZ4 chunks and the
 // property formats that existed in 2016. Newer files break it in three ways:

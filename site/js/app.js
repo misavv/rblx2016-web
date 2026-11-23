@@ -1,9 +1,16 @@
-/* Browser shell for the 2016 Roblox engine port.
+/* Browser shell for the 2016 Bloxro engine port.
  * The menu is intentionally small; the engine owns the game itself. */
 (function () {
   "use strict";
 
   const MAX_PLACE_BYTES = 32 * 1024 * 1024;
+
+  // Place names come from file names ("ROBLOX Racing (2014 game)"): show the
+  // brand as Bloxro (same rule as tools/brand/retext.py).
+  function brandName(s) {
+    return String(s).replace(/(?<![A-Za-z0-9_.\/\:@#<-])(ROBLOX|Roblox|roblox)(IANS|IAN|IA|ians|ian|ia)?(?![A-Za-z0-9_\-\/\@]|\.[A-Za-z])/g,
+      (m, w, suf) => ({ ROBLOX: "BLOXRO", Roblox: "Bloxro", roblox: "bloxro" })[w] + (suf || ""));
+  }
   const $ = (id) => document.getElementById(id);
 
   // ?mute=1: silence all game/menu sound for the rest of this tab (testing).
@@ -118,15 +125,15 @@
     // Stable ids: bundled places in file-name order.
     const list = places.filter((p) => p.kind === "bundled").map((p) => p.id.slice(6)).sort();
     return list.map((file, i) => {
-      const name = file.replace(/\.rbxlx?$/i, "");
+      const name = brandName(file.replace(/\.rbxlx?$/i, ""));
       const m = /^(.*?)\s*\((\d{4})\s*([^)]*)\)\s*$/.exec(name);
       const sort = (SHELL_SORTS.find((s) => s.test(name)) || SHELL_SORTS[1]).id;
       return { id: 1000 + i, file, title: m ? m[1] : name, year: m ? m[2] : "", sort,
-        creator: "ROBLOX", description: (m ? m[1] + " (" + m[2] + ")" : name) + ". Runs offline in your browser on the 2016 engine." };
+        creator: "BLOXRO", description: (m ? m[1] + " (" + m[2] + ")" : name) + ". Runs offline in your browser on the 2016 engine." };
     });
   }
-  // Avatar packages: Roblox's own classic packages (catalog/packages.json,
-  // downloaded from Roblox): body parts (CharacterMesh models) plus the
+  // Avatar packages: Bloxro's own classic packages (catalog/packages.json,
+  // downloaded from Bloxro): body parts (CharacterMesh models) plus the
   // package's accessories, stored in catalog/item like every other item.
   let bundleList = null;
   async function loadBundles() {
@@ -136,7 +143,7 @@
     return bundleList;
   }
   const BUNDLES_KEY = "rblx2016.xbox.packages";
-  // Roblox's free packages, which every account owned.
+  // Bloxro's free packages, which every account owned.
   const FREE_PACKAGES = [900000311, 900000238, 900000239, 900000109, 900000108];
   function ownedBundles() {
     let saved = null;
@@ -158,7 +165,7 @@
     if (b.accessories.length) avatar.accessories = b.accessories.slice();
     saveAvatar();
   }
-  // A package's picture: the package on a plain grey avatar, like Roblox's
+  // A package's picture: the package on a plain grey avatar, like Bloxro's
   // package thumbnails.
   function bundleSpec(b) {
     return b.parts.concat(b.accessories).map((id) => "acc:" + id).concat(["body:194,194,194,194,194,194"]).join(";");
@@ -172,12 +179,13 @@
     return g ? "&game=" + g : "";
   }
   function placeTitle(name) {
+    name = brandName(name || "");
     const m = /^(.*?)\s*\((\d{4})[^)]*\)\s*$/.exec(name || "");
     return m ? m[1] : (name || "");
   }
   function setPlaceInfo(mod, name, creator) {
     if (typeof mod._rblx_set_place_info !== "function") return;
-    try { mod.ccall("rblx_set_place_info", null, ["string", "string"], [placeTitle(name), creator || "ROBLOX"]); } catch (_) {}
+    try { mod.ccall("rblx_set_place_info", null, ["string", "string"], [placeTitle(name), creator || "BLOXRO"]); } catch (_) {}
   }
   async function loadShellPack(mod) {
     if (mod.__xboxshell) return true;
@@ -250,7 +258,7 @@
     }
   }
   // ---------------------------------------------------------- avatar render job
-  // ?render=avatar: what Roblox's thumbnail server did for the Xbox app
+  // ?render=avatar: what Bloxro's thumbnail server did for the Xbox app
   // (RCC + ThumbnailGenerator): load the avatar into an empty scene, point a
   // thumbnail camera at it with the GUI off, render, save. Here the 2016
   // engine renders it and webserve.py saves thumbs/__avatar.jpg; the Xbox menu
@@ -760,7 +768,7 @@
       const list = await fetchPlaceList();
       const bundled = (Array.isArray(list) ? list : []).map((p) => ({
         id: "place:" + p.file,
-        name: p.name,
+        name: brandName(p.name),
         kind: "bundled",
         size: p.bytes,
         // Static deploys ship places gzipped (make_deploy.py); manifest says so.
@@ -1128,7 +1136,7 @@
       const by = el("div", "left:0;top:80px;height:30px;font-size:28px;line-height:30px;" + stroke, "By");
       const rIcon = el("img", "left:38px;top:80px;width:30px;height:30px");
       rIcon.src = "content/textures/ui/Shell/Icons/RobloxIcon32.png"; rIcon.alt = "";
-      const creator = el("div", "left:72px;top:80px;height:30px;font-size:28px;line-height:30px;white-space:nowrap;" + stroke, "ROBLOX");
+      const creator = el("div", "left:72px;top:80px;height:30px;font-size:28px;line-height:30px;white-space:nowrap;" + stroke, "BLOXRO");
       info.append(name, by, rIcon, creator);
       const spin = el("img", "right:105px;bottom:45px;width:140px;height:140px;animation:rblxSpin 1.2s linear infinite");
       spin.src = "content/textures/loading/loadingCircle.png"; spin.alt = "";
@@ -1162,7 +1170,7 @@
         xboxCover.append(spin);
       } else {
         logo.src = "xboxshell/textures/Icons/ROBLOXSplashLogo.png";
-        logo.alt = "ROBLOX";
+        logo.alt = "BLOXRO";
         logo.style.cssText = "position:relative;width:min(46vw,594px)";
       }
       xboxCover.append(tint, logo);
@@ -1410,8 +1418,8 @@
       // rbxassetid:// resolves to <origin>/asset/?id=N; serve.py proxies that
       // to assetdelivery and caches the bytes.
       // The loading screen shows the game's name and creator (the real client
-      // asked Roblox's servers; here the page knows them).
-      if (!SHELL_MODE && !RENDER_MODE && selected) setPlaceInfo(mod, selected.name, selected.local ? (userName.value.trim() || "Player1") : "ROBLOX");
+      // asked Bloxro's servers; here the page knows them).
+      if (!SHELL_MODE && !RENDER_MODE && selected) setPlaceInfo(mod, selected.name, selected.local ? (userName.value.trim() || "Player1") : "BLOXRO");
       const rc = mod.ccall("rblx_start_place", "number",
         ["number", "number", "string", "string", "number"],
         // Must include the subpath: a project page lives under /<repo>/ and
@@ -1694,7 +1702,7 @@
       if (!m.ip) setStatus("The host left the game.", true);
     });
     const userId = conn.ip & 0xffffff;
-    setPlaceInfo(mod, (conn.info && conn.info.place) || "", "ROBLOX");
+    setPlaceInfo(mod, (conn.info && conn.info.place) || "", "BLOXRO");
     const rc = mod.ccall("rblx_join_start", "number",
       ["number", "number", "number", "string", "string", "number"],
       [hostIp >>> 0, window.RblxNet.GAME_PORT, userId, name, new URL(".", location.href).href, touchDevice ? 1 : 0]);
@@ -2428,7 +2436,7 @@
     if (!catalogItems.length) {
       catNote.style.display = "block";
       catNote.innerHTML = "No catalog was scraped yet. Run <code>python3 port/tools/fetch_catalog.py</code>" +
-        " to build <code>web/catalog/</code> from the Roblox website.";
+        " to build <code>web/catalog/</code> from the Bloxro website.";
       return;
     }
     catNote.style.display = "none";
@@ -3122,7 +3130,7 @@
       // The shell runs over its own 3D world (PlatformContent/durango ScaledWorld);
       // the avatar render job over an empty scene.
       const p = SHELL_MODE
-        ? { id: "shell:world", name: "ROBLOX for Xbox", kind: "shell", src: "xboxshell/ScaledWorld.rbxl", bytes: null }
+        ? { id: "shell:world", name: "BLOXRO for Xbox", kind: "shell", src: "xboxshell/ScaledWorld.rbxl", bytes: null }
         : RENDER_MODE
           ? { id: "render:avatar", name: "Avatar render", kind: "shell", src: "xboxrender/AvatarRender.rbxlx", bytes: null }
           : places.find((x) => x.id === "place:" + autoPlay);

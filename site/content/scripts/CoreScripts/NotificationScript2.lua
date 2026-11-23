@@ -2,7 +2,7 @@
 		Filename: NotificationScript2.lua
 		Version 1.1
 		Written by: jmargh
-		Description: Handles notification gui for the following in game ROBLOX events
+		Description: Handles notification gui for the following in game BLOXRO events
 			Badge Awarded
 			Player Points Awarded
 			Friend Request Recieved/New Friend

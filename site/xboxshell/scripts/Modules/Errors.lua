@@ -41,7 +41,7 @@ local Errors =
 	{
 		CannotJoinGame = { Title = "An Error Occured", Msg = "Cannot join games from studio.", Code = 401 };
 		StillInDev = { Title = "An Error Occured", Msg = "This feature is still in development.", Code = 402 };
-		FeatureNotAvailableInStudio = { Title =  "An Error Occured", Msg = "This feature is not available in Roblox Studio.", Code = 403 };
+		FeatureNotAvailableInStudio = { Title =  "An Error Occured", Msg = "This feature is not available in Bloxro Studio.", Code = 403 };
 	};
 
 	PackageEquip =

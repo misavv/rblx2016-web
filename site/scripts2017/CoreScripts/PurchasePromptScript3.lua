@@ -82,7 +82,7 @@ local BUTTON_TEXT_OBJECTS = {}
 local ERROR_MSG = {
 	PURCHASE_DISABLED = "In-game purchases are temporarily disabled",
 	INVALID_FUNDS = "your account does not have enough ROBUX",
-	UNKNOWN = "ROBLOX is performing maintenance",
+	UNKNOWN = "BLOXRO is performing maintenance",
 	UNKNWON_FAILURE = "something went wrong"
 }
 local PURCHASE_MSG = {
@@ -896,7 +896,7 @@ local function onPurchaseFailed(failType)
 	elseif failType == PURCHASE_FAILED.DID_NOT_BUY_ROBUX then
 		failedText = string.gsub(failedText, "errorReason", ERROR_MSG.INVALID_FUNDS)
 	elseif failType == PURCHASE_FAILED.PROMPT_PURCHASE_ON_GUEST then
-		failedText = "You need to create a ROBLOX account to buy items, visit www.roblox.com for more info."
+		failedText = "You need to create a BLOXRO account to buy items, visit www.roblox.com for more info."
 	elseif failType == PURCHASE_FAILED.THIRD_PARTY_DISABLED then
 		failedText = "Third-party item sales have been disabled for this place. Your account has not been charged."
 		setPreviewImage(PurchaseData.ProductInfo, PurchaseData.AssetId)

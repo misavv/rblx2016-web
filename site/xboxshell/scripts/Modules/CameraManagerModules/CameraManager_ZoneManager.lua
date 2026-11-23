@@ -1,4 +1,4 @@
--- Written by Tomarty, Copyright ROBLOX 2015
+-- Written by Tomarty, Copyright BLOXRO 2015
 local runService = game:GetService("RunService")
 
 

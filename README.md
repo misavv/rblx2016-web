@@ -1,10 +1,10 @@
-# Roblox 2016 in the browser
+# Bloxro 2016 in the browser
 
-The 2016 Roblox client engine compiled to WebAssembly, with real 2016-style
+The 2016 Bloxro client engine compiled to WebAssembly, with real 2016-style
 multiplayer: the first player in a room hosts the game on a 2016
 `NetworkServer` running in their browser, and everyone else joins it as a
 `NetworkClient`. Game scripts run once, on the host's server, the way they did
-on Roblox's game servers.
+on Bloxro's game servers.
 
 ## What's in here
 
@@ -73,6 +73,20 @@ Put it behind HTTPS so pages can connect with `wss://`.
 
 Players can also paste a relay address into the **Relay URL** box on the play
 page, which overrides `mp-relay.json`.
+
+## Your own domain (lhs.lol on Cloudflare)
+
+The game is also served at **https://blox.lhs.lol** and the relay at
+**wss://relay.lhs.lol**, both through Cloudflare Workers on the lhs.lol zone:
+
+- `relay/cloudflare` (the relay) has `relay.lhs.lol` as a custom domain in
+  its `wrangler.toml`.
+- `relay/site-proxy` is a tiny Worker on `blox.lhs.lol` that passes every
+  request to the Vercel site (`UPSTREAM` in its `wrangler.toml`), so updates
+  pushed to Vercel show up there too.
+
+Deploy either with `npx.cmd wrangler@3.99.0 deploy` in its folder (`npx.cmd`
+on Windows PowerShell). Cloudflare creates the DNS records itself.
 
 ## Playing together
 

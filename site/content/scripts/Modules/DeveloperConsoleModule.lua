@@ -354,7 +354,7 @@ function DeveloperConsole.new(screenGui, permissions, messagesAndStats)
 	
 	
 	do -- Title
-		local title = Primitives.InvisibleTextLabel(handle, 'Title', "ROBLOX Developer Console")
+		local title = Primitives.InvisibleTextLabel(handle, 'Title', "BLOXRO Developer Console")
 		title.Size = UDim2_new(1, -5, 1, 0)
 		title.Position = UDim2_new(0, 5, 0, 0)	
 		title.FontSize = Enum.FontSize.Size18

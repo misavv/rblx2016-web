@@ -1,4 +1,4 @@
--- Creates the generic "ROBLOX" loading screen on startup
+-- Creates the generic "BLOXRO" loading screen on startup
 -- Written by ArceusInator & Ben Tkacheff, 2014
 --
 
@@ -142,7 +142,7 @@ function InfoProvider:LoadAssets()
 		if okInfo and type(webInfo) == "string" and webInfo ~= "" and webInfo ~= "	" then
 			local webName, webCreator = string.match(webInfo, "^(.-)	(.*)$")
 			if webName and webName ~= "" then
-				GameAssetInfo = { Name = webName, Creator = { Name = (webCreator ~= "" and webCreator) or "ROBLOX" } }
+				GameAssetInfo = { Name = webName, Creator = { Name = (webCreator ~= "" and webCreator) or "BLOXRO" } }
 				return
 			end
 		end

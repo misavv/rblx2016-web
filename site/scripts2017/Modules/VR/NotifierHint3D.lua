@@ -1,5 +1,5 @@
 -- NotifierHint3D.lua --
--- Written by Kip Turner, copyright ROBLOX 2016 --
+-- Written by Kip Turner, copyright BLOXRO 2016 --
 
 local NotifierHint = {}
 
@@ -14,7 +14,7 @@ local Util = require(RobloxGui.Modules.Settings.Utility)
 local NotificationObject = Util:Create'ImageLabel'
 {
 	Name = 'NotificationObject';
-	-- These numbers are a bit funny to fit the screen of ROBLOX VR
+	-- These numbers are a bit funny to fit the screen of BLOXRO VR
 	Position = UDim2.new(0.5, -860, 1, -1 - 300);
 	Size = UDim2.new(0, 1700,0, 700 + 300);
 	BackgroundTransparency = 1;

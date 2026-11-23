@@ -52,8 +52,8 @@ local function filterXboxFriends(friendsData)
 	local onlineRobloxFriendsData = {}
 	local onlineRobloxFriendsUserIds = {}
 	local onlineFriendsData = {}
-	-- filter into two list, those online in roblox and those online
-	-- for those online, also get their roblox userId
+	-- filter into two list, those online in bloxro and those online
+	-- for those online, also get their bloxro userId
 	for i = 1, #friendsData do
 		local data = friendsData[i]
 		if data["status"] and data["status"] == STATUS.ONLINE then
@@ -71,7 +71,7 @@ local function filterXboxFriends(friendsData)
 		end
 	end
 
-	-- now get roblox friends presence in roblox
+	-- now get bloxro friends presence in bloxro
 	local robloxPresence = {}
 	if #onlineRobloxFriendsUserIds > 0 then
 		local jsonTable = {}
@@ -83,7 +83,7 @@ local function filterXboxFriends(friendsData)
 		end
 	end
 
-	-- now append roblox presence data to each users data
+	-- now append bloxro presence data to each users data
 	for i = 1, #onlineRobloxFriendsData do
 		if robloxPresence[i] then
 			local data = onlineRobloxFriendsData[i]
@@ -122,7 +122,7 @@ local function filterXboxFriends(friendsData)
 		end
 	end
 
-	-- now sort those in roblox
+	-- now sort those in bloxro
 	table.sort(onlineRobloxFriendsData, function(a, b)
 		if a["PlaceId"] and b["PlaceId"] then
 			return a["display"] < b["display"]
@@ -156,7 +156,7 @@ end
 			// xuid - number, xbox user id
 			// gamertage - string, users gamertag
 			// display - string, users display name (depends on user settings, could be same as gamertag)
-			// robloxuid - number, users roblox userId
+			// robloxuid - number, users bloxro userId
 			// status - string (Online, Away, Offline, Unknown)
 			// rich - array of rich presence, might currently be empty?
 				// timestamp - number, UTC timestamp of record
@@ -180,7 +180,7 @@ end
 
 local function getOnlineFriends()
 	if UserSettings().GameSettings:InStudioMode() then
--- Roblox Friends - leaving this in for testing purposes in studio
+-- Bloxro Friends - leaving this in for testing purposes in studio
 		local result = Http.GetOnlineFriendsAsync()
 		if not result then
 			-- TODO: Error code

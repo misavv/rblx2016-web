@@ -1,4 +1,4 @@
--- Written by Kip Turner, Copyright ROBLOX 2015
+-- Written by Kip Turner, Copyright BLOXRO 2015
 
 
 local enUS =
@@ -124,17 +124,17 @@ local enUS =
 	["AuthAccountUnlinkedPhrase"] = "";	-- This is a special case handled by EngagementScreen
 	["AuthMissingGamePadPhrase"] = "No gamepad detected. Please turn on a gamepad.";
 	["AuthNoUserDetectedPhrase"] = "No Xbox Live user detected. Please sign in to an Xbox Live account.";
-	["AuthHttpErrorDetected"] = "Trouble communicating with ROBLOX servers. Please check www.roblox.com/help/xbox for more info.";
-	["AuthErrorPhrase"] = "Trouble communicating with ROBLOX servers. Please try again.";
+	["AuthHttpErrorDetected"] = "Trouble communicating with BLOXRO servers. Please check www.roblox.com/help/xbox for more info.";
+	["AuthErrorPhrase"] = "Trouble communicating with BLOXRO servers. Please try again.";
 
 	-- Reauth (Booted to engagement screen)
 	["ReauthSignedOutTitle"] = "Signed Out";
 	["ReauthSignedOutPhrase"] = "You have signed out of your Xbox Live account. Please sign in to continue.";
 	["ReauthRemovedTitle"] = "User Changed";
 	["ReauthRemovedPhrase"] = "We have detected a change in the active user. Please sign in again.";
-	["ReauthInvalidSessionPhrase"] = "You have been signed out of all current ROBLOX sessons.";
+	["ReauthInvalidSessionPhrase"] = "You have been signed out of all current BLOXRO sessons.";
 	["ReauthUnlinkTitle"] = "Account Unlinked";
-	["ReauthUnlinkPhrase"] = "You have successfully unlinked from your ROBLOX account. You can now choose to sign in again, or sign up for a new ROBLOX account.";
+	["ReauthUnlinkPhrase"] = "You have successfully unlinked from your BLOXRO account. You can now choose to sign in again, or sign up for a new BLOXRO account.";
 	["ReauthUnknownPhrase"] = "An error occurred and you have been signed out. Please sign in again to continue playing.";
 
 	-- Sign In
@@ -146,8 +146,8 @@ local enUS =
 	["UsernameRulePhrase"] = "3-20 characters, no spaces";
 	["PasswordRulePhrase"] = "6 letters and 2 numbers minimum";
 	["AccountSettingsTitle"] = "Account Settings";
-	["PlatformLinkInfoTitle"] = "Welcome to ROBLOX!";
-	["PlatformLinkInfoMessage"] = "We have created a new ROBLOX account for you. All game progress and purchases will be saved to this ROBLOX account. Now you can sign in on any platform and continue where you left off!";
+	["PlatformLinkInfoTitle"] = "Welcome to BLOXRO!";
+	["PlatformLinkInfoMessage"] = "We have created a new BLOXRO account for you. All game progress and purchases will be saved to this BLOXRO account. Now you can sign in on any platform and continue where you left off!";
 
 	-- Sign In/Up Errors
 	["InvalidUsernameTitle"] = "Invalid Username";
@@ -159,17 +159,17 @@ local enUS =
 	["InvalidCharactersUsedPhrase"] = "The username you entered contains invalid characters. Only letters and numbers are allowed.";
 	["UsernameCannotContainSpacesPhrase"] = "The username you entered contains spaces. Only letters and numbers are allowed.";
 	["NoUsernameEnteredPhrase"] = "Username is required.";
-	["NoUsernameOrPasswordEnteredPhrase"] = "You must enter a valid username and password to set up your ROBLOX account.";
-	["LinkedAsPhrase"] = "%s is currently linked to your ROBLOX account, %s.";
+	["NoUsernameOrPasswordEnteredPhrase"] = "You must enter a valid username and password to set up your BLOXRO account.";
+	["LinkedAsPhrase"] = "%s is currently linked to your BLOXRO account, %s.";
 
 	-- Linking Errors
 	["LinkSignUpDisabled"] = "Sign up is currently disabled. Please try again later.";
-	["LinkFlooded"] = "You have signed up too many times today. Please sign in with an existing ROBLOX account or try again later.";
+	["LinkFlooded"] = "You have signed up too many times today. Please sign in with an existing BLOXRO account or try again later.";
 	["LinkLeaseLocked"] = "Transaction in progress. Please wait.";
 	["LinkAccountLinkingDisabled"] = "Account linking is currently disabled. Please try again later.";
-	["LinkInvalidRobloxUser"] = "The ROBLOX username you entered is invalid. Please enter a valid ROBLOX username.";
-	["LinkRobloxUserAlreadyLinked"] = "Your Xbox Live account is already linked to a ROBLOX account";
-	["LinkXboxUserAlreadyLinked"] = "Your Xbox Live account is already linked to a ROBLOX account.";
+	["LinkInvalidRobloxUser"] = "The BLOXRO username you entered is invalid. Please enter a valid BLOXRO username.";
+	["LinkRobloxUserAlreadyLinked"] = "Your Xbox Live account is already linked to a BLOXRO account";
+	["LinkXboxUserAlreadyLinked"] = "Your Xbox Live account is already linked to a BLOXRO account.";
 	["LinkIllegalChildAccountLinking"] = "The accounts could not be linked. Please review your Xbox age settings.";
 	["LinkInvalidPassword"] = "The password you entered is invalid. Please enter the correct password.";
 	["LinkUsernamePasswordNotSet"] = "Username or password is empty. Please enter a username and password and try again.";
@@ -178,37 +178,37 @@ local enUS =
 	["LinkUnknownError"] = "An unknown error has occurred. Please try again.";
 
 	-- Linking
-	["LinkAccountTitle"] = "Sign in to ROBLOX";
-	["LinkAccountPhrase"] = "Sign in with an existing ROBLOX account to access your Avatar appearance and save game progress.\n\nYour ROBLOX account will be linked to your Xbox Live account, and the next time you play you will sign in automatically!\n\nYou can unlink from the Settings screen at any time.";
+	["LinkAccountTitle"] = "Sign in to BLOXRO";
+	["LinkAccountPhrase"] = "Sign in with an existing BLOXRO account to access your Avatar appearance and save game progress.\n\nYour BLOXRO account will be linked to your Xbox Live account, and the next time you play you will sign in automatically!\n\nYou can unlink from the Settings screen at any time.";
 
 	-- Sign Up
 	["SignUpWord"] = "Sign up";
-	["SignUpTitle"] = "Create a ROBLOX Account";
-	["SignUpPhrase"] = "A ROBLOX account is your access to ROBLOX on every platform. Simply set a username and password and you can sign in anywhere and continue where you left off!\n\nYour new ROBLOX account will be linked to your Xbox Live account, and the next time you play you will sign in automatically!\n\nYou can unlink from the Settings screen at any time.";
+	["SignUpTitle"] = "Create a BLOXRO Account";
+	["SignUpPhrase"] = "A BLOXRO account is your access to BLOXRO on every platform. Simply set a username and password and you can sign in anywhere and continue where you left off!\n\nYour new BLOXRO account will be linked to your Xbox Live account, and the next time you play you will sign in automatically!\n\nYou can unlink from the Settings screen at any time.";
 
 	-- Edge Case - have linked account but no credentials
 	["SetCredentialsTitle"] = "Assign Username and Password";
-	["SetCredentialsPhrase"] = "Looks like you were interrupted before you could finish signing up! Don't worry, you can finish setting up your ROBLOX account by choosing a username and password here.\n\nYour ROBLOX account will be linked to your Xbox Live account, and the next time you play you will sign in automatically!\n\nYou can unlink from the Settings screen at any time.";
+	["SetCredentialsPhrase"] = "Looks like you were interrupted before you could finish signing up! Don't worry, you can finish setting up your BLOXRO account by choosing a username and password here.\n\nYour BLOXRO account will be linked to your Xbox Live account, and the next time you play you will sign in automatically!\n\nYou can unlink from the Settings screen at any time.";
 	["SetCredentialsWord"] = "Assign";
 
 	-- Unlink
 	["UnlinkTitle"] = "Unlink Account";
 	["UnlinkGamerTagPhrase"] = "Unlink %s";
-	["UnlinkPhrase"] = "Are you sure you want to unlink this ROBLOX account from your Xbox account? Your save data and purchases are associated with this ROBLOX account and will be inaccessible until you sign back in!";
+	["UnlinkPhrase"] = "Are you sure you want to unlink this BLOXRO account from your Xbox account? Your save data and purchases are associated with this BLOXRO account and will be inaccessible until you sign back in!";
 
 	-- Error Strings
 	["UnableToJoinTitle"] = "Unable to Join";
 	["ErrorOccurredTitle"] = "An Error Occurred";
 
-	["DefaultErrorPhrase"] = "Could not connect to ROBLOX. Please try again later.";
+	["DefaultErrorPhrase"] = "Could not connect to BLOXRO. Please try again later.";
 
-	["DefaultJoinFailPhrase"]  = "Could not connect to ROBLOX. Please try again later.";
-	["AlreadyRunningPhrase"] = "You are already in this ROBLOX game.";
-	["WebServerConnectFailPhrase"] = "Could not connect to ROBLOX servers. Please try again later.";
-	["AccessDeniedByWeb"] = "The ROBLOX game you are trying to join is currently not available.";
-	["InstanceNotFound"] = "The ROBLOX game you are trying to join is currently not available.";
-	["GameFullPhrase"] = "The ROBLOX game you are trying to join is currently full.";
-	["FollowUserFailed"] = "The ROBLOX game you are trying to join is currently not available.";
+	["DefaultJoinFailPhrase"]  = "Could not connect to BLOXRO. Please try again later.";
+	["AlreadyRunningPhrase"] = "You are already in this BLOXRO game.";
+	["WebServerConnectFailPhrase"] = "Could not connect to BLOXRO servers. Please try again later.";
+	["AccessDeniedByWeb"] = "The BLOXRO game you are trying to join is currently not available.";
+	["InstanceNotFound"] = "The BLOXRO game you are trying to join is currently not available.";
+	["GameFullPhrase"] = "The BLOXRO game you are trying to join is currently full.";
+	["FollowUserFailed"] = "The BLOXRO game you are trying to join is currently not available.";
 
 	["UnableToEquipTitle"] = "Unable to Select";
 	["UnableToEquipPhrase"] = "We were unable to select that Avatar. Please try again later.";

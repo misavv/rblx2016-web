@@ -1,5 +1,5 @@
 -- VirtualKeyboard.lua --
--- Written by Kip Turner, copyright ROBLOX 2016 --
+-- Written by Kip Turner, copyright BLOXRO 2016 --
 
 
 local CoreGui = game:GetService('CoreGui')
@@ -210,7 +210,7 @@ do
 	    'ASR_STATUS_DATA_LOSS',
 	    -- last official google response
 
-	    -- Roblox statuses
+	    -- Bloxro statuses
 	    'ASR_STATUS_NOT_ENABLED',
 	    'ASR_STATUS_LOW_CONFIDENCE',
 	    'ASR_STATUS_INVALID_JSON'

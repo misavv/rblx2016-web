@@ -1,7 +1,7 @@
 --[[
 			// ConfirmPrompt.lua
 			// Kip Turner
-			// Copyright Roblox 2015
+			// Copyright Bloxro 2015
 ]]
 local CoreGui = game:GetService("CoreGui")
 local GuiRoot = CoreGui:FindFirstChild("RobloxGui")

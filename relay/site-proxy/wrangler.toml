@@ -1,0 +1,10 @@
+name = "bloxro-site"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+# The game on your own domain (Cloudflare creates the DNS record).
+routes = [
+  { pattern = "blox.lhs.lol", custom_domain = true }
+]
+
+[vars]
+UPSTREAM = "https://archivieblocks.vercel.app"

@@ -1,7 +1,7 @@
 --[[
 	// FileName: Chat.lua
 	// Written by: SolarCrane
-	// Description: Code for lua side chat on ROBLOX.
+	// Description: Code for lua side chat on BLOXRO.
 ]]
 
 --[[ CONSTANTS ]]

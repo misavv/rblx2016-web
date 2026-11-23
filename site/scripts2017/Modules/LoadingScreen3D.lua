@@ -1,5 +1,5 @@
 -- LoadingScreen3D.lua --
--- Written by Kip Turner, copyright ROBLOX 2016 --
+-- Written by Kip Turner, copyright BLOXRO 2016 --
 
 local GUI_DISTANCE_FROM_CAMERA = 6
 local VERTICAL_SCREEN_PERCENT = 1/3

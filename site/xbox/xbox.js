@@ -1,4 +1,4 @@
-/* Web port of the ROBLOX Xbox One app shell (2015-2017, PlatformContent/durango).
+/* Web port of the BLOXRO Xbox One app shell (2015-2017, PlatformContent/durango).
  *
  * Screens follow the Lua modules: EngagementScreen -> AppHub with the TabDock
  * (Home, Avatar, Games, Friends, Catalog), GameDetail, SettingsScreen. One
@@ -521,9 +521,9 @@
     const desc = el("div", "desc",
       `${n.title} as it was in ${n.year || "its day"}. ` +
       (/popular/i.test(n.kind) ? "One of the most played games of its time, saved from the original place file." :
-        /classic/i.test(n.kind) ? "A classic ROBLOX map from the early years." :
-        /test map/i.test(n.kind) ? "One of ROBLOX's own engine test places." : "A ROBLOX game place.") +
-      " It runs entirely in your browser on the 2016 engine; anything that needed ROBLOX's servers will not work.");
+        /classic/i.test(n.kind) ? "A classic BLOXRO map from the early years." :
+        /test map/i.test(n.kind) ? "One of BLOXRO's own engine test places." : "A BLOXRO game place.") +
+      " It runs entirely in your browser on the 2016 engine; anything that needed BLOXRO's servers will not work.");
     col.append(desc);
     const facts = el("div", "detail-col facts");
     const fact = (k, v) => { const d = el("div"); d.append(el("b", null, k), document.createTextNode(v)); return d; };

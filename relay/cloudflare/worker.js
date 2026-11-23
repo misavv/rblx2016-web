@@ -1,4 +1,4 @@
-/* Multiplayer relay for the Roblox 2016 web port (Cloudflare Worker).
+/* Multiplayer relay for the Bloxro 2016 web port (Cloudflare Worker).
  *
  * The site itself can live anywhere (Vercel, GitHub Pages...). Browsers there
  * open a WebSocket to  wss://<this worker>/mp/<room>?role=host|player  and
@@ -25,7 +25,7 @@ export default {
       return stub.fetch(request);
     }
     if (url.pathname === "/" || url.pathname === "/health")
-      return new Response("Roblox 2016 multiplayer relay: OK\n", { headers: { "Content-Type": "text/plain" } });
+      return new Response("Bloxro 2016 multiplayer relay: OK\n", { headers: { "Content-Type": "text/plain" } });
     return new Response("Not found", { status: 404 });
   },
 };

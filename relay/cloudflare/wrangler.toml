@@ -1,6 +1,11 @@
 name = "rblx2016-relay"
 main = "worker.js"
 compatibility_date = "2024-09-23"
+# Custom domain on the lhs.lol zone (Cloudflare creates the DNS record).
+routes = [
+  { pattern = "relay.lhs.lol", custom_domain = true }
+]
+
 
 # One Durable Object per multiplayer room.
 [[durable_objects.bindings]]

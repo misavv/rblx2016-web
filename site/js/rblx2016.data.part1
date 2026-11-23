@@ -54563,7 +54563,7 @@ game:GetService("Workspace").DescendantRemoving:connect(OnEdit)
 
 spawn(CheckForSaveOnInterval)
 -- ContextActionTouch.lua
--- Copyright ROBLOX 2014, created by Ben Tkacheff
+-- Copyright BLOXRO 2014, created by Ben Tkacheff
 -- this script controls ui and firing of lua functions that are bound in ContextActionService for touch inputs
 -- Essentially a user can bind a lua function to a key code, input type (mousebutton1 etc.) and this
 
@@ -55405,7 +55405,7 @@ function initializeDeveloperConsole()
 		FontSize = Enum.FontSize.Size18;
 		Text = "Server Console";
 		TextColor3 = Color3.new(1, 1, 1);
-		Text = "Roblox Developer Console";
+		Text = "Bloxro Developer Console";
 		TextYAlignment = Enum.TextYAlignment.Top;
 	}
 	
@@ -56918,7 +56918,7 @@ setupGamepadControls()
 --[[ 
 	This script controls the gui the player sees in regards to his or her health.
 	Can be turned with Game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health,false)
-	Copyright ROBLOX 2014. Written by Ben Tkacheff.
+	Copyright BLOXRO 2014. Written by Ben Tkacheff.
 --]]
 
 ---------------------------------------------------------------------
@@ -57963,7 +57963,7 @@ onLoad()--[[
 		Filename: NotificationScript2.lua
 		Version 1.1
 		Written by: jmargh
-		Description: Handles notification gui for the following in game ROBLOX events
+		Description: Handles notification gui for the following in game BLOXRO events
 			Badge Awarded
 			Player Points Awarded
 			Friend Request Recieved/New Friend
@@ -58668,7 +58668,7 @@ local GAMEPAD_BUTTONS = {}
 local ERROR_MSG = {
 	PURCHASE_DISABLED = "In-game purchases are temporarily disabled",
 	INVALID_FUNDS = "your account does not have enough ROBUX",
-	UNKNOWN = "ROBLOX is performing maintenance",
+	UNKNOWN = "BLOXRO is performing maintenance",
 	UNKNWON_FAILURE = "something went wrong"
 }
 local PURCHASE_MSG = {
@@ -59354,7 +59354,7 @@ local function onPurchaseFailed(failType)
 	elseif failType == PURCHASE_FAILED.DID_NOT_BUY_ROBUX then
 		failedText = string.gsub(failedText, "errorReason", ERROR_MSG.INVALID_FUNDS)
 	elseif failType == PURCHASE_FAILED.PROMPT_PURCHASE_ON_GUEST then
-		failedText = "You need to create a ROBLOX account to buy items, visit www.roblox.com for more info."
+		failedText = "You need to create a BLOXRO account to buy items, visit www.roblox.com for more info."
 	elseif failType == PURCHASE_FAILED.THIRD_PARTY_DISABLED then
 		failedText = "Third-party item sales have been disabled for this place. Your account has not been charged."
 		setPreviewImage(PurchaseData.ProductInfo, PurchaseData.AssetId)
@@ -60097,7 +60097,7 @@ end
 --[[
 	// FileName: Topbar.lua
 	// Written by: SolarCrane
-	// Description: Code for lua side Top Menu items in ROBLOX.
+	// Description: Code for lua side Top Menu items in BLOXRO.
 ]]
 
 
@@ -68821,7 +68821,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 --[[
-A "Create" function for easy creation of Roblox instances. The function accepts a string which is the classname of
+A "Create" function for easy creation of Bloxro instances. The function accepts a string which is the classname of
 the object to be created. The function then returns another function which either accepts accepts no arguments, in 
 which case it simply creates an object of the given type, or a table argument that may contain several types of data, 
 in which case it mutates the object in varying ways depending on the nature of the aggregate data. These are the
@@ -69065,7 +69065,7 @@ t.Help =
 			       "Arguments: None. "..
 			       "Returns: None. "..
 			       "Description: This call disconnects all handlers attacched to this function, note however, it "..
-			       "does NOT make waiting code continue, as is the behavior of normal Roblox events. This method "..
+			       "does NOT make waiting code continue, as is the behavior of normal Bloxro events. This method "..
 			       "can also be called on the connection object which is returned from Signal:connect to only "..
 			       "disconnect a single handler, as opposed to this method, which will disconnect all handlers."
 		end
@@ -69107,7 +69107,7 @@ return t
 
 
 
--- Creates the generic "ROBLOX" loading screen on startup
+-- Creates the generic "BLOXRO" loading screen on startup
 -- Written by ArceusInator & Ben Tkacheff, 2014
 --
 
@@ -69250,7 +69250,7 @@ function InfoProvider:LoadAssets()
 		if okInfo and type(webInfo) == "string" and webInfo ~= "" and webInfo ~= "	" then
 			local webName, webCreator = string.match(webInfo, "^(.-)	(.*)$")
 			if webName and webName ~= "" then
-				GameAssetInfo = { Name = webName, Creator = { Name = (webCreator ~= "" and webCreator) or "ROBLOX" } }
+				GameAssetInfo = { Name = webName, Creator = { Name = (webCreator ~= "" and webCreator) or "BLOXRO" } }
 				return
 			end
 		end
@@ -71438,7 +71438,7 @@ return BackpackScript
 --[[
 	// FileName: Chat.lua
 	// Written by: SolarCrane
-	// Description: Code for lua side chat on ROBLOX.
+	// Description: Code for lua side chat on BLOXRO.
 ]]
 
 --[[ CONSTANTS ]]
@@ -74445,7 +74445,7 @@ function DeveloperConsole.new(screenGui, permissions, messagesAndStats)
 	
 	
 	do -- Title
-		local title = Primitives.InvisibleTextLabel(handle, 'Title', "ROBLOX Developer Console")
+		local title = Primitives.InvisibleTextLabel(handle, 'Title', "BLOXRO Developer Console")
 		title.Size = UDim2_new(1, -5, 1, 0)
 		title.Position = UDim2_new(0, 5, 0, 0)	
 		title.FontSize = Enum.FontSize.Size18
@@ -80252,7 +80252,7 @@ local function Initialize()
 		camFrame.Position = UDim2.new(0,0,charMoveFrame.Size.Y.Scale,charMoveFrame.Size.Y.Offset + rowOffset)
 		camFrame.Parent = parentFrame
 
-		local menuFrame = createPCGroup("Menu Items", {		[1] = {["ROBLOX Menu"] = "ESC"}, 
+		local menuFrame = createPCGroup("Menu Items", {		[1] = {["BLOXRO Menu"] = "ESC"}, 
 														 	[2] = {["Backpack"] = "~"},
 															[3] = {["Playerlist"] = "TAB"},
 															[4] = {["Chat"] = "/"} })
@@ -80313,7 +80313,7 @@ local function Initialize()
 			createGamepadLabel("Move", UDim2.new(0,-80,0.31,-textVerticalSize/2), UDim2.new(0,46,0,textVerticalSize))
 			createGamepadLabel("Menu Navigation", UDim2.new(0,-50,0.46,-textVerticalSize/2), UDim2.new(0,164,0,textVerticalSize))
 			createGamepadLabel("Use Tool", UDim2.new(0.96,0,0,-textVerticalSize/2), UDim2.new(0,73,0,textVerticalSize))
-			createGamepadLabel("ROBLOX Menu", UDim2.new(0.96,0,0.15,-textVerticalSize/2), UDim2.new(0,122,0,textVerticalSize))
+			createGamepadLabel("BLOXRO Menu", UDim2.new(0.96,0,0.15,-textVerticalSize/2), UDim2.new(0,122,0,textVerticalSize))
 			createGamepadLabel("Back", UDim2.new(0.96,0,0.31,-textVerticalSize/2), UDim2.new(0,43,0,textVerticalSize))
 			createGamepadLabel("Jump", UDim2.new(0.96,0,0.46,-textVerticalSize/2), UDim2.new(0,49,0,textVerticalSize))
 			createGamepadLabel("Rotate Camera", UDim2.new(1,0,0.62,-textVerticalSize/2), UDim2.new(0,132,0,textVerticalSize))
@@ -80324,7 +80324,7 @@ local function Initialize()
 			createGamepadLabel("Move", UDim2.new(-0.08,0,0.31,-textVerticalSize/2), UDim2.new(0,46,0,textVerticalSize))
 			createGamepadLabel("Menu Navigation", UDim2.new(-0.125,0,0.46,-textVerticalSize/2), UDim2.new(0,164,0,textVerticalSize))
 			createGamepadLabel("Use Tool", UDim2.new(0.96,0,0,-textVerticalSize/2), UDim2.new(0,73,0,textVerticalSize))
-			createGamepadLabel("ROBLOX Menu", UDim2.new(0.9,0,0.15,-textVerticalSize/2), UDim2.new(0,122,0,textVerticalSize))
+			createGamepadLabel("BLOXRO Menu", UDim2.new(0.9,0,0.15,-textVerticalSize/2), UDim2.new(0,122,0,textVerticalSize))
 			createGamepadLabel("Back", UDim2.new(1.01,0,0.31,-textVerticalSize/2), UDim2.new(0,43,0,textVerticalSize))
 			createGamepadLabel("Jump", UDim2.new(0.91,0,0.46,-textVerticalSize/2), UDim2.new(0,49,0,textVerticalSize))
 			createGamepadLabel("Rotate Camera", UDim2.new(0.91,0,0.62,-textVerticalSize/2), UDim2.new(0,132,0,textVerticalSize))
@@ -85061,7 +85061,7 @@ return moduleApiTable--[[
 		Filename: TenFootInterface.lua
 		Written by: jeditkacheff
 		Version 1.0
-		Description: Setups up some special UI for ROBLOX TV gaming
+		Description: Setups up some special UI for BLOXRO TV gaming
 --]]
 -------------- CONSTANTS --------------
 local HEALTH_GREEN_COLOR = Color3.new(27/255, 252/255, 107/255)

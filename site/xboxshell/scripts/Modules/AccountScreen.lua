@@ -28,7 +28,7 @@ local function createAccountScreen()
 	local hasRobloxCredentials = UserData:HasRobloxCredentials()
 
 	-- Cases
-	-- 1. Has roblox credentials, which implies they have a linked account
+	-- 1. Has bloxro credentials, which implies they have a linked account
 	-- 2. No credentials but a linked account
 	-- 3. No Credentials/No Linked account - this should never happen, but cover it
 	-- 4. One of these calls has a web error, result will be nil in that case

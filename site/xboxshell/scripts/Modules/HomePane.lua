@@ -1,4 +1,4 @@
--- Written by Kip Turner, Copyright ROBLOX 2015
+-- Written by Kip Turner, Copyright BLOXRO 2015
 
 local CoreGui = Game:GetService("CoreGui")
 local GuiService = game:GetService('GuiService')
