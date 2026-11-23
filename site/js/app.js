@@ -976,14 +976,30 @@
   // link.py splits the 110 MB preloaded content pack into parts under 100 MB,
   // the largest file a static host like GitHub Pages accepts. Reassemble it
   // into a Blob the Emscripten loader fetches as if it were rblx2016.data.
-  async function preloadDataPackage() {
+  // The parts list (never cached) also names the build: every engine file is
+  // fetched with ?v=<build>, so a browser can't mix a new rblx2016.js with
+  // cached parts of the previous build ("shader pack ... is corrupted").
+  let engineBuild = null;
+  async function engineBuildInfo() {
+    if (engineBuild) return engineBuild;
     try {
       const listing = await fetch("js/rblx2016.data.parts.json", { cache: "no-store" });
-      if (!listing.ok) return null;
-      const parts = (await listing.json()).parts;
+      engineBuild = listing.ok ? await listing.json() : {};
+    } catch (_) {
+      engineBuild = {};
+    }
+    return engineBuild;
+  }
+  function withBuild(url) {
+    const v = engineBuild && engineBuild.version;
+    return v ? url + (url.includes("?") ? "&" : "?") + "v=" + v : url;
+  }
+  async function preloadDataPackage() {
+    try {
+      const parts = (await engineBuildInfo()).parts;
       if (!Array.isArray(parts) || !parts.length) return null;
       const buffers = await Promise.all(parts.map(async (part) => {
-        const response = await fetch(part);
+        const response = await fetch(withBuild(part));
         if (!response.ok) throw new Error("missing " + part);
         return response.arrayBuffer();
       }));
@@ -998,10 +1014,11 @@
     if (engine) return engine;
     if (!modulePromise) {
       modulePromise = (async () => {
+        await engineBuildInfo();
         if (typeof window.createRBLX2016Module !== "function") {
           await new Promise((resolve, reject) => {
             const s = document.createElement("script");
-            s.src = "js/rblx2016.js";
+            s.src = withBuild("js/rblx2016.js");
             s.onload = resolve;
             s.onerror = () => reject(new Error(
               "The 2016 engine module (js/rblx2016.js) is not present yet. " +
@@ -1023,8 +1040,8 @@
           canvas: $("gameCanvas"),
           locateFile: (path, prefix) => {
             if (dataUrl && path.endsWith(".data")) return dataUrl;
-            if (prefix) return prefix + path;
-            return new URL("js/" + path, location.href).href;
+            if (prefix) return withBuild(prefix + path);
+            return withBuild(new URL("js/" + path, location.href).href);
           },
           preRun: [() => console.log("[rbx2016] preRun")],
           onRuntimeInitialized: () => console.log("[rbx2016] runtime initialized"),
