@@ -1357,7 +1357,9 @@
     // A black screen usually means a renderer switch: show it without hunting.
     const compat = $("compat");
     if (compat) compat.open = true;
-    fatalText.textContent = err && err.stack ? err.stack : String(err || "Unknown error");
+    const msg = err && err.message ? String(err.message) : String(err || "Unknown error");
+    const stack = err && err.stack ? String(err.stack) : "";
+    fatalText.textContent = stack.includes(msg) ? stack : msg + (stack ? "\n\n" + stack : "");
     fatal.style.display = "flex";
   }
 
@@ -1649,6 +1651,7 @@
       f.setAttribute("aria-hidden", "true");
       // Kept rendered (not display:none) so the browser doesn't park it.
       f.style.cssText = "position:fixed;left:0;top:0;width:2px;height:2px;opacity:0;pointer-events:none;border:0;z-index:-1";
+      let hosted = false;
       const timer = setTimeout(() => reject(new Error("The game server did not start (timed out).")), 180000);
       const onMsg = (e) => {
         if (e.origin !== location.origin || e.source !== f.contentWindow || !e.data || !e.data.rblx2016mp) return;
@@ -1658,11 +1661,20 @@
         } else if (m.t === "status") {
           if (m.msg) setStatus("Starting your game server… " + m.msg);
         } else if (m.t === "hosting") {
-          clearTimeout(timer); resolve(m);
+          hosted = true; clearTimeout(timer); resolve(m);
         } else if (m.t === "error") {
           clearTimeout(timer); reject(new Error("Game server: " + m.msg));
         } else if (m.t === "crashed") {
-          showFatal(new Error("The game server stopped: " + (m.msg || "engine error")));
+          const why = m.msg || "engine error";
+          if (!hosted) { clearTimeout(timer); reject(new Error("Game server crashed: " + why)); return; }
+          if (cfg.local) {
+            // Don't use the private server for this game again; Play runs it solo.
+            try { localStorage.setItem("rblx2016.serverFail." + place.id, String(Date.now())); } catch (_) {}
+            showFatal(new Error("This game's private game server stopped (" + why + "). " +
+              "Go back and press Play again: it will run without a server this time."));
+          } else {
+            showFatal(new Error("The game server stopped: " + why));
+          }
         }
       };
       window.addEventListener("message", onMsg);
@@ -1700,6 +1712,7 @@
     const mode = serverMode();
     if (mode === "never") return false;
     if (mode === "always") return true;
+    try { if (selected && localStorage.getItem("rblx2016.serverFail." + selected.id)) return false; } catch (_) {}
     const scan = window.PlaceFix && window.PlaceFix.scan ? window.PlaceFix.scan(bytes) : null;
     if (scan) console.log("[rbx2016] place scan:", JSON.stringify(scan));
     return !!(scan && scan.needsServer);
