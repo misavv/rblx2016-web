@@ -164,15 +164,17 @@
     <div class="local-char-left">
       <div class="local-box">
         <h3>Avatar</h3>
-        <div class="local-stage">
-          <canvas id="cz3d" aria-label="3D view of your avatar. Drag to rotate, scroll to zoom."></canvas>
-          <canvas id="czPreview" width="240" height="300" aria-label="2D view of your avatar" hidden></canvas>
+        <div class="local-stage" id="czStage">
+          <img id="czPic" class="roblox-avatar-image" width="352" height="352" alt="Your avatar" hidden>
+          <div class="local-rendering" id="czRendering" hidden>
+            <img src="assets/www.roblox.com/images/spinners/loading_bluesquares.gif" alt="">
+            <span>Drawing your avatar&hellip;</span>
+          </div>
         </div>
         <div class="local-stage-bar">
           <span class="local-name"><img id="czBcIcon" alt="" hidden><span id="czNameText"></span></span>
-          <span class="local-mode"><a data-mode="2d">2D</a><a data-mode="3d">3D</a></span>
         </div>
-        <p class="local-fine" id="czHint">Drag to rotate &middot; scroll to zoom</p>
+        <p class="local-fine" id="czHint">Something wrong with your avatar? <a id="czRedraw">Click here to re-draw it!</a></p>
       </div>
       <div class="local-box">
         <h3>Avatar Colors</h3>
@@ -190,7 +192,17 @@
       <div class="local-box">
         <h3>Wardrobe <a class="btn-control btn-control-small local-getall" id="czGetAll">Get Everything</a></h3>
         <div class="local-tabs" id="czTabs"></div>
-        <input type="search" class="local-wsearch" id="czSearch" placeholder="Search your wardrobe" aria-label="Search your wardrobe">
+        <div class="local-wtools">
+          <input type="search" class="local-wsearch" id="czSearch" placeholder="Search your wardrobe" aria-label="Search your wardrobe">
+          <label class="local-sort">Sort by:
+            <select id="czSort" aria-label="Sort your wardrobe">
+              <option value="recent">Recently Acquired</option>
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="name">Name (A&ndash;Z)</option>
+            </select></label>
+          <span class="local-count" id="czCount"></span>
+        </div>
 
         <div class="local-items" id="czGrid"></div>
         <div class="local-note" id="czNote" hidden></div>
@@ -260,7 +272,6 @@
 </footer>
 <div id="local-modal-backdrop" class="local-modal-backdrop" hidden></div>
 <script src="common.js"></script>
-<script src="../js/avatar3d.js"></script>
 <script src="character.js"></script>
 </body>
 </html>

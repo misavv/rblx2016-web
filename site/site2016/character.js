@@ -1,5 +1,6 @@
 /* Avatar (Character) page for the ported 2016 site: wardrobe, currently
- * wearing, body colours, Builders Club, and a 3D/2D avatar view. Same saved
+ * wearing, body colours, Builders Club, and the avatar picture, drawn by the
+ * engine's own thumbnail renderer like the 2016 site's thumbnail servers did. Same saved
  * avatar as the game menu (common.js), so changes apply on the next Play. */
 (function () {
   "use strict";
@@ -8,10 +9,13 @@
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const av = S.avatar;
 
-  // 2016 wardrobe categories (hair and other accessories lived under Hats).
+  // 2016 wardrobe categories, one per catalog type.
   const TABS = [
-    { id: "hats", label: "Hats", types: ["hat", "hair", "shoulder", "back"] },
+    { id: "hats", label: "Hats", types: ["hat"] },
+    { id: "hair", label: "Hair", types: ["hair"] },
     { id: "face", label: "Faces", types: ["face"] },
+    { id: "shoulder", label: "Shoulder", types: ["shoulder"] },
+    { id: "back", label: "Back", types: ["back"] },
     { id: "tshirt", label: "T-Shirts", types: ["tshirt"] },
     { id: "shirt", label: "Shirts", types: ["shirt"] },
     { id: "pants", label: "Pants", types: ["pants"] },
@@ -30,11 +34,23 @@
   const hexOf = (n) => (BRICK_COLORS.find((c) => c.n === n) || { hex: "#a3a2a5" }).hex;
   const PAGE = 12;
   let tab = "hats", page = 0, bodyPart = 3;
+  let sort = (() => { try { return localStorage.getItem("rblx2016.wardrobeSort") || "recent"; } catch (_) { return "recent"; } })();
 
+  const created = (it) => String(it.created || "");
+  const SORTS = {
+    // Newest first among items got one at a time, then everything else by date.
+    recent: (a, b) => (S.acquiredAt(b.id) - S.acquiredAt(a.id)) || created(b).localeCompare(created(a)) || b.id - a.id,
+    newest: (a, b) => created(b).localeCompare(created(a)) || b.id - a.id,
+    oldest: (a, b) => created(a).localeCompare(created(b)) || a.id - b.id,
+    name: (a, b) => String(a.name).localeCompare(String(b.name), undefined, { sensitivity: "base" }) || a.id - b.id,
+  };
+
+  // Currently Wearing in the 2016 order: accessories, then head, face, clothes.
+  const ACC_ORDER = ["hat", "hair", "shoulder", "back"];
   function worn() {
-    const out = [];
-    for (const k of ["head", "shirt", "pants", "tshirt", "face"]) { const it = S.byId(av[k]); if (it) out.push(it); }
-    for (const id of av.accessories) { const it = S.byId(id); if (it) out.push(it); }
+    const out = av.accessories.map((id) => S.byId(id)).filter(Boolean)
+      .sort((a, b) => ACC_ORDER.indexOf(a.type) - ACC_ORDER.indexOf(b.type));
+    for (const k of ["head", "face", "tshirt", "shirt", "pants"]) { const it = S.byId(av[k]); if (it) out.push(it); }
     return out;
   }
 
@@ -106,63 +122,68 @@
     $("czNameText").textContent = S.userName();
   }
 
-  // ---------------------------------------------------------------- 3D / 2D
-  let mode = (() => { try { return localStorage.getItem("rblx2016.czMode") || "3d"; } catch (_) { return "3d"; } })();
-  let viewer = null, viewerFailed = false, timer = 0;
-  function renderMode() {
-    if (mode === "3d" && !viewer && !viewerFailed && window.Avatar3D) {
-      viewer = window.Avatar3D.create($("cz3d"));
-      if (!viewer) viewerFailed = true;
-    }
-    const three = mode === "3d" && viewer;
-    $("cz3d").hidden = !three;
-    $("czPreview").hidden = !!three;
-    $("czHint").textContent = three ? "Drag to rotate · scroll to zoom" : (viewerFailed ? "3D needs WebGL; showing the flat view." : "Flat front view.");
-    for (const a of document.querySelectorAll(".local-mode a")) a.classList.toggle("on", a.dataset.mode === (three ? "3d" : "2d"));
-    if (three) {
+  // ---------------------------------------------------------------- avatar picture
+  // The 2016 Avatar page showed a 352x352 picture from the thumbnail servers
+  // (RCC's ThumbnailGenerator), redrawn after every change. Here the same
+  // render job runs in a hidden frame (index.html?render=avatar&embed=1) and
+  // leaves a transparent PNG at thumbs/__avatar.png.
+  const PIC = "../thumbs/__avatar.png";
+  const PIC_KEY = "rblx2016.site.avatarPic";
+  let renderFrame = null, renderAgain = false, renderTimer = 0;
+  const sig = () => JSON.stringify([av.body, av.head, av.face, av.tshirt, av.shirt, av.pants, av.accessories]);
+  function lastPic() {
+    try { return JSON.parse(localStorage.getItem(PIC_KEY) || "null"); } catch (_) { return null; }
+  }
+  function showPic(v) {
+    const i = $("czPic");
+    i.onload = () => { i.hidden = false; };
+    i.onerror = () => { i.hidden = true; };
+    i.src = PIC + "?v=" + encodeURIComponent(v);
+  }
+  function setBusy(on, text) {
+    $("czStage").classList.toggle("busy", on);
+    $("czRendering").hidden = !on;
+    if (text) $("czRendering").querySelector("span").textContent = text;
+  }
+  function renderPreview(force) {
+    const have = lastPic();
+    if (have && !$("czPic").src) showPic(have.v);
+    if (!force && have && have.sig === sig()) { if (!renderFrame) setBusy(false); return; }
+    setBusy(true, "Drawing your avatar…");
+    clearTimeout(renderTimer);
+    renderTimer = setTimeout(startRender, force ? 0 : 900);
+  }
+  function startRender() {
+    if (renderFrame) { renderAgain = true; return; }
+    const want = sig();
+    const f = document.createElement("iframe");
+    renderFrame = f;
+    // Kept on screen (a hidden page gets no frames to render with), invisible.
+    f.style.cssText = "position:fixed;left:0;top:0;width:640px;height:480px;border:0;opacity:0;pointer-events:none;z-index:-1";
+    f.setAttribute("aria-hidden", "true");
+    f.tabIndex = -1;
+    let timer = 0;
+    const done = (ok) => {
+      window.removeEventListener("message", onMsg);
       clearTimeout(timer);
-      timer = setTimeout(() => {
-        const item = (id) => (id ? "../catalog/item/" + id : null);
-        viewer.setAvatar({
-          body: av.body.map(hexOf),
-          shirt: item(av.shirt), pants: item(av.pants), tshirt: item(av.tshirt),
-          face: av.face ? item(av.face) : "../content/textures/face.png",
-          accessories: av.accessories.map((id) => S.byId(id)).filter(Boolean).map((it) => "../catalog/" + it.file),
-          brickHex: hexOf,
-        });
-      }, 30);
-    } else {
-      draw2d();
-    }
-  }
-  const imgs = new Map();
-  function img(src) {
-    if (!src) return null;
-    let i = imgs.get(src);
-    if (!i) { i = new Image(); i.onload = () => draw2d(); i.src = src; imgs.set(src, i); }
-    return i.complete && i.naturalWidth ? i : null;
-  }
-  function draw2d() {
-    const cv = $("czPreview");
-    if (cv.hidden) return;
-    const g = cv.getContext("2d");
-    g.clearRect(0, 0, cv.width, cv.height);
-    const s = 44, hs = 51, ox = (cv.width - 4 * s) / 2, oy = (cv.height - (hs + 2 + 4 * s)) / 2, ty = oy + hs + 2;
-    const R = { torso: [ox + s, ty, 2 * s, 2 * s], rArm: [ox, ty, s, 2 * s], lArm: [ox + 3 * s, ty, s, 2 * s],
-      rLeg: [ox + s, ty + 2 * s, s, 2 * s], lLeg: [ox + 2 * s, ty + 2 * s, s, 2 * s] };
-    const head = [ox + 2 * s - hs / 2, oy, hs, hs];
-    const fill = (r, c) => { g.fillStyle = c; g.fillRect(r[0], r[1], r[2], r[3]); };
-    fill(R.rArm, hexOf(av.body[2])); fill(R.lArm, hexOf(av.body[1])); fill(R.torso, hexOf(av.body[3]));
-    fill(R.rLeg, hexOf(av.body[5])); fill(R.lLeg, hexOf(av.body[4])); fill(head, hexOf(av.body[0]));
-    const blit = (im, sx, sy, sw, sh, r) => { const kx = im.naturalWidth / 585, ky = im.naturalHeight / 559; g.drawImage(im, sx * kx, sy * ky, sw * kx, sh * ky, r[0], r[1], r[2], r[3]); };
-    const pants = av.pants && img("../catalog/item/" + av.pants);
-    if (pants) { blit(pants, 231, 74, 128, 128, R.torso); blit(pants, 217, 355, 64, 128, R.rLeg); blit(pants, 308, 355, 64, 128, R.lLeg); }
-    const shirt = av.shirt && img("../catalog/item/" + av.shirt);
-    if (shirt) { blit(shirt, 231, 74, 128, 128, R.torso); blit(shirt, 217, 355, 64, 128, R.rArm); blit(shirt, 308, 355, 64, 128, R.lArm); }
-    const tee = av.tshirt && img("../catalog/item/" + av.tshirt);
-    if (tee) g.drawImage(tee, R.torso[0] + 10, R.torso[1] + 10, R.torso[2] - 20, R.torso[3] - 20);
-    const face = img(av.face ? "../catalog/item/" + av.face : "../content/textures/face.png");
-    if (face) g.drawImage(face, head[0], head[1], head[2], head[3]);
+      f.remove();
+      renderFrame = null;
+      if (ok) {
+        const v = Date.now().toString(36);
+        try { localStorage.setItem(PIC_KEY, JSON.stringify({ sig: want, v })); } catch (_) {}
+        showPic(v);
+      }
+      if (renderAgain || want !== sig()) { renderAgain = false; startRender(); return; }
+      if (ok) setBusy(false);
+      else setBusy(true, "Couldn't draw your avatar. Try re-drawing it.");
+    };
+    const onMsg = (e) => {
+      if (e.source === f.contentWindow && e.data && e.data.rblxAvatarRendered) done(e.data.rblxAvatarRendered !== "failed");
+    };
+    window.addEventListener("message", onMsg);
+    timer = setTimeout(() => done(false), 120000);
+    f.src = "../index.html?render=avatar&embed=1&test=none&mute=1&k=" + Date.now().toString(36);
+    document.body.appendChild(f);
   }
 
   // ---------------------------------------------------------------- wardrobe
@@ -173,17 +194,24 @@
         if (i) tabs.appendChild(document.createTextNode(" | "));
         const a = document.createElement("a");
         a.textContent = t.label;
+        a.title = t.label;
         a.dataset.id = t.id;
         a.addEventListener("click", () => { tab = t.id; page = 0; render(); });
         tabs.appendChild(a);
       });
     }
-    for (const a of tabs.querySelectorAll("a")) a.classList.toggle("on", a.dataset.id === tab);
+    for (const a of tabs.querySelectorAll("a")) {
+      const tt = TABS.find((x) => x.id === a.dataset.id);
+      const n = (S._items || []).filter((it) => tt.types.includes(it.type) && S.owns(it.id)).length;
+      a.textContent = tt.label + (n ? " (" + n.toLocaleString() + ")" : "");
+      a.classList.toggle("on", a.dataset.id === tab);
+    }
 
     const t = TABS.find((x) => x.id === tab);
     const q = ($("czSearch") && $("czSearch").value.trim().toLowerCase()) || "";
     const mine = (S._items || []).filter((it) => t.types.includes(it.type) && S.owns(it.id) &&
-      (!q || String(it.name || "").toLowerCase().includes(q)));
+      (!q || String(it.name || "").toLowerCase().includes(q))).sort(SORTS[sort] || SORTS.recent);
+    $("czCount").textContent = mine.length ? mine.length.toLocaleString() + (mine.length === 1 ? " item" : " items") : "";
     const grid = $("czGrid"), note = $("czNote"), pager = $("czPager");
     grid.innerHTML = ""; pager.innerHTML = "";
     if (!mine.length) {
@@ -221,18 +249,18 @@
 
     renderBody();
     renderBc();
-    renderMode();
+    renderPreview(false);
   }
 
   async function boot() {
     S.wireChrome("character");
-    for (const a of document.querySelectorAll(".local-mode a")) {
-      a.addEventListener("click", () => {
-        mode = a.dataset.mode;
-        try { localStorage.setItem("rblx2016.czMode", mode); } catch (_) {}
-        renderMode();
-      });
-    }
+    $("czSort").value = sort;
+    $("czSort").addEventListener("change", () => {
+      sort = $("czSort").value;
+      try { localStorage.setItem("rblx2016.wardrobeSort", sort); } catch (_) {}
+      page = 0; render();
+    });
+    $("czRedraw").addEventListener("click", () => renderPreview(true));
     $("czGetAll").addEventListener("click", async () => {
       const btn = $("czGetAll");
       btn.textContent = "Getting…";

@@ -30,6 +30,11 @@
     return new Set(ids.map(Number).filter(Boolean));
   }
   const inventory = loadInventory();
+  // When each item was got (ms), for the wardrobe's "Recently Acquired" order.
+  // Items from "Get Everything" have no time and sort by catalog date instead.
+  const ACQ_KEY = "rblx2016.acquired";
+  let acquired = {};
+  try { acquired = JSON.parse(get(ACQ_KEY, "{}")) || {}; } catch (_) {}
 
   function notify(what) {
     if (window.parent && window.parent !== window) {
@@ -42,7 +47,16 @@
   const S = {
     avatar, inventory, ACCESSORY_TYPES,
     owns: (id) => inventory.has(Number(id)),
-    give(id) { id = Number(id); if (id && !inventory.has(id)) { inventory.add(id); saveInventory(); } },
+    give(id) {
+      id = Number(id);
+      if (id && !inventory.has(id)) {
+        inventory.add(id);
+        acquired[id] = Date.now();
+        set(ACQ_KEY, JSON.stringify(acquired));
+        saveInventory();
+      }
+    },
+    acquiredAt: (id) => Number(acquired[id]) || 0,
     // Put every catalog item in the inventory at once. Returns how many were new.
     async giveAll() {
       const items = await S.loadItems();
