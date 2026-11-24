@@ -370,6 +370,15 @@ details.panel .body{ padding:2px 14px 13px; border-top:1px solid #dde5ee; }
   })();
 </script>
 <style>html.xbox-boot body { visibility: hidden; } html.xbox-boot #xboxCover { visibility: visible; }</style>
+<!-- The 2016 website (site2016/) is the menu unless a game, Studio or the
+     Xbox flow was asked for; don't flash the old menu underneath it. -->
+<script>
+  (function () {
+    if (/[?&](play|test|suite|classic|embed|studio|shell|from|render|mpserver)(=|&|$)/.test(location.search)) return;
+    document.documentElement.className += " site-boot";
+  })();
+</script>
+<style>html.site-boot #login { visibility: hidden; } html.site-boot #siteOverlay { background:#e3e3e3; }</style>
 </head>
 <body>
 <div id="view"><canvas id="gameCanvas"></canvas></div>
@@ -602,7 +611,7 @@ details.panel .body{ padding:2px 14px 13px; border-top:1px solid #dde5ee; }
 
 <!-- The ported 2016 roblox.com pages (site2016/catalog.html, character.html). -->
 <div id="siteOverlay" hidden>
-  <iframe id="siteFrame" title="BLOXRO"></iframe>
+  <iframe id="siteFrame" title="BLOXRO" allow="fullscreen"></iframe>
 </div>
 
 <div id="diagBox"></div>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fd3f5"/>
+      <stop offset="1" stop-color="#e3f3fd"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <!-- a baseplate seen from above -->
+  <polygon points="60,250 580,250 640,360 0,360" fill="#4b974b"/>
+  <polygon points="60,250 580,250 586,258 54,258" fill="#5aa95a"/>
+  <!-- a brick -->
+  <polygon points="270,190 370,190 390,215 290,215" fill="#e8e8e8"/>
+  <polygon points="290,215 390,215 390,262 290,262" fill="#c4c4c4"/>
+  <polygon points="270,190 290,215 290,262 270,236" fill="#a8a8a8"/>
+  <text x="320" y="120" font-family="Source Sans Pro, Arial, sans-serif" font-size="44" font-weight="700" fill="#ffffff" text-anchor="middle" opacity=".9">BLOXRO</text>
+</svg>

@@ -655,6 +655,16 @@
   function setStatus(msg, isError) {
     status.textContent = msg || "";
     status.classList.toggle("err", !!isError);
+    if (siteStatusHook) { try { siteStatusHook(msg || "", !!isError); } catch (_) { siteStatusHook = null; } }
+  }
+  // The 2016 website (site2016/) is the menu: it shows its own "now loading"
+  // box while a game starts and hears our status lines through this.
+  var siteStatusHook = null;
+  // Hide whatever menu is up once the game's own loading screen is showing.
+  function hideMenus() {
+    login.style.display = "none";
+    const o = $("siteOverlay");
+    if (o && !o.hidden) { o.hidden = true; siteStatusHook = null; }
   }
 
   function sanitizeName(raw) {
@@ -1548,7 +1558,7 @@
             await new Promise((resolve) => setTimeout(resolve, 900));
             await afterPaint();
           }
-          login.style.display = "none";
+          hideMenus();
           setStatus("");
           if (mpSession) return;  // the server streams the game in
           try { mod.ccall("rblx_load_place", "number", [], []); } catch (e) { console.warn(e); }
@@ -1561,7 +1571,7 @@
       startLoad(25);
     } else {
       if (!mpSession) { try { mod.ccall("rblx_load_place", "number", [], []); } catch (_) {} }
-      login.style.display = "none";
+      hideMenus();
       setStatus("Place loaded, but the renderer did not start (headless engine).", true);
     }
   }
@@ -1575,8 +1585,18 @@
   // (js/net.js).
   const MP_SERVER_MODE = new URLSearchParams(location.search).get("mpserver") === "1";
 
+  // A server picked on the website's game page (Servers tab) applies to that
+  // one Play only: undefined = use the saved setting, null = play solo.
+  var mpOverride;
   function mpSettings() {
     let enabled = false, room = "", relay = "";
+    if (mpOverride !== undefined) {
+      const o = mpOverride;
+      mpOverride = undefined;
+      if (!o || SHELL_MODE || RENDER_MODE || !window.RblxNet) return null;
+      try { relay = (localStorage.getItem("rblx2016.mpRelay") || "").trim(); } catch (_) {}
+      return { room: String(o.room || "lobby").slice(0, 32), relay: relay || defaultRelay() };
+    }
     try { enabled = localStorage.getItem("rblx2016.mp") === "1"; } catch (_) {}
     if (!enabled || SHELL_MODE || RENDER_MODE || !window.RblxNet) return null;
     try { room = (localStorage.getItem("rblx2016.mpRoom") || "").trim(); } catch (_) {}
@@ -2967,12 +2987,24 @@
   // ------------------------------------------------- ported 2016 site pages
   // site2016/catalog.html and character.html share this page's saved avatar
   // (localStorage) and tell us when it changes or when to close.
+  // site2016/ is the 2016 roblox.com rebuilt as BLOXRO. Without ?play,
+  // ?studio etc. it is the whole menu (index.html#/games.html ...); the old
+  // browser-owned menu (#login) stays underneath as the engine's control panel
+  // and as ?classic=1.
+  const SITE_PAGE = /^(home|games|game|develop|catalog|character|profile|inventory|settings|info)\.html(\?[^#]*)?$/;
+  let siteMode = false;
+  function siteRouteFromHash() {
+    let h = "";
+    h = location.hash.replace(/^#\/?/, "");  // kept percent-encoded, as the frame's URL is
+    return SITE_PAGE.test(h) ? h : "home.html";
+  }
   function openSite(page) {
-    const overlay = $("siteOverlay");
-    $("siteFrame").src = "site2016/" + page + ".html";
-    overlay.hidden = false;
+    const url = /\.html/.test(page) ? page : page + ".html";
+    $("siteFrame").src = "site2016/" + url;
+    $("siteOverlay").hidden = false;
   }
   function closeSite() {
+    if (siteMode) { openSite("home"); return; }
     $("siteOverlay").hidden = true;
     $("siteFrame").src = "about:blank";
     reloadAvatarFromStorage();
@@ -2990,6 +3022,69 @@
     if (e.data.rblx2016 === "close") closeSite();
     else if (e.data.rblx2016 === "avatar") reloadAvatarFromStorage();
   });
+  // Keep the address bar on the page being shown, so a reload (or leaving a
+  // game, which reloads) comes back to it.
+  function syncSiteHash() {
+    if (!siteMode || playing) return;
+    let w = null;
+    try { w = $("siteFrame").contentWindow; } catch (_) {}
+    if (!w) return;
+    let path = "";
+    try { path = w.location.pathname + w.location.search; } catch (_) { return; }
+    const m = /\/site2016\/([a-z]+\.html(?:\?[^#]*)?)$/.exec(path);
+    if (!m) return;
+    const hash = m[1] === "home.html" ? "" : "#/" + m[1];
+    try { history.replaceState(null, "", location.pathname + location.search + hash); } catch (_) {}
+    try { if (w.document.title) document.title = w.document.title; } catch (_) {}
+  }
+  // What the website pages may ask of the engine page (same origin only).
+  function sitePlace(p) {
+    return { id: p.id, name: p.name, kind: p.kind, size: p.size || 0,
+      file: p.kind === "bundled" ? p.id.slice(6) : "", mineId: p.mineId || "" };
+  }
+  let placesReady = null;
+  window.RBLX2016_SITE = {
+    places: () => places.map(sitePlace),
+    ready: () => placesReady || Promise.resolve(),
+    refresh: () => (placesReady = loadPlaces()),
+    canPlay: () => hasWebGL2(),
+    busy: () => playing,
+    relay: () => defaultRelay(),
+    // opts.server: {room} joins that multiplayer server once; opts.solo: no
+    // multiplayer even if it's switched on; opts.onStatus(text, isError).
+    play(id, opts) {
+      opts = opts || {};
+      if (playing) return false;
+      const p = places.find((x) => x.id === id);
+      if (!p) return false;
+      selected = p;
+      renderPlaces();
+      mpOverride = opts.server ? { room: opts.server.room } : opts.solo ? null : undefined;
+      siteStatusHook = typeof opts.onStatus === "function" ? opts.onStatus : null;
+      play();
+      return true;
+    },
+    // A .rbxl from the visitor's computer; resolves to its place id.
+    openFile(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) { reject(new Error("No file.")); return; }
+        if (file.size > MAX_PLACE_BYTES) {
+          reject(new Error("Place file is too large (limit " + (MAX_PLACE_BYTES / 1024 / 1024) + " MB).")); return;
+        }
+        file.arrayBuffer().then((buf) => {
+          const p = { id: "local:" + file.name, name: file.name.replace(/\.(rbxlx?|rbxm|xml)$/i, ""),
+            kind: "local", size: buf.byteLength, bytes: new Uint8Array(buf), local: true };
+          const old = places.findIndex((x) => x.id === p.id);
+          if (old >= 0) places.splice(old, 1);
+          places.unshift(p);
+          renderPlaces();
+          resolve(p.id);
+        }, reject);
+      });
+    },
+    // Settings live on the old menu's controls, so the engine reads them as before.
+    control: (id) => (/^(userName|ui2017|unlockFps|lightGrid|gles2Shaders|showDiag|cookieInput|cookieSave|cookieClear|cookieState|cookieNote|mpRelay|mpEnable|mpRoom)$/.test(id) ? $(id) : null),
+  };
 
   function openCatalog() {
     catalogPage.classList.add("open");
@@ -3116,7 +3211,23 @@
       playBtn.disabled = true;
     }
     renderPlaces();
-    await loadPlaces();
+    {
+      const sq = new URLSearchParams(location.search);
+      siteMode = !SHELL_MODE && !RENDER_MODE && !XBOX_FLOW &&
+        !["play", "test", "suite", "classic", "embed"].some((k) => sq.has(k));
+      if (siteMode) {
+        $("siteFrame").addEventListener("load", syncSiteHash);
+        window.addEventListener("hashchange", () => {
+          const want = siteRouteFromHash();
+          let have = "";
+          try { have = $("siteFrame").contentWindow.location.pathname.split("/site2016/")[1] + $("siteFrame").contentWindow.location.search; } catch (_) {}
+          if (want !== have && !(want === "home.html" && /^home\.html/.test(have))) openSite(want);
+        });
+        openSite(siteRouteFromHash());
+      }
+    }
+    placesReady = loadPlaces();
+    await placesReady;
     installCookieUi();
     window.RBLX2016_MENU = { play, stop, places };
     // The engine menu's Leave button (Exit verb) calls this. Reload instead of

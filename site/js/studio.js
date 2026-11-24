@@ -1473,7 +1473,7 @@ body.studio #view{ position:fixed; z-index:1; }
     injectCss();
     const page = el("div");
     page.id = "stStart";
-    page.innerHTML = "<header><b>BLOXRO STUDIO</b><span>2016 edition</span><a href='./'>Back to games</a></header><main></main>";
+    page.innerHTML = "<header><b>BLOXRO STUDIO</b><span>2016 edition</span><a href='./#/develop.html'>Back to Develop</a></header><main></main>";
     document.body.appendChild(page);
     const main = page.querySelector("main");
     main.appendChild(el("h2", "", "New"));
