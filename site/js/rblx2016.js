@@ -14338,17 +14338,17 @@ function checkIncomingModuleAPI() {
 }
 
 var ASM_CONSTS = {
-  10855876: ($0, $1) => {
+  10872580: ($0, $1) => {
     try {
       localStorage.setItem("rblx2016.ds." + (Module.__rblxPlaceKey || "") + "|" + UTF8ToString($0), UTF8ToString($1));
     } catch (e) {}
     Module._free($0);
     Module._free($1);
   },
-  10856050: ($0, $1, $2) => {
+  10872754: ($0, $1, $2) => {
     if (Module.rblxStudioBytes) Module.rblxStudioBytes($0, $1, $2);
   },
-  10856118: ($0, $1, $2) => {
+  10872822: ($0, $1, $2) => {
     if (Module.rblxStudioResult) Module.rblxStudioResult($0, $1, UTF8ToString($2));
   }
 };

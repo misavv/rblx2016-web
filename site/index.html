@@ -478,6 +478,14 @@ details.panel .body{ padding:2px 14px 13px; border-top:1px solid #dde5ee; }
                 <option value="2">No light grid (diagnostic)</option>
               </select>
             </div>
+            <div class="cfgRow">
+              <label for="serverMode">Game server</label>
+              <select id="serverMode" title="Run games on a private 2016 game server in this page">
+                <option value="auto">Automatic (games that need one)</option>
+                <option value="always">Always</option>
+                <option value="never">Never (play solo)</option>
+              </select>
+            </div>
             <label class="checkRow" for="gles2Shaders">
               <input type="checkbox" id="gles2Shaders">
               Use the GLES2 shader pack (renderer compatibility)

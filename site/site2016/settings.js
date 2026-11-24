@@ -90,6 +90,19 @@
   const game = sections.game;
   checkbox(game, "ui2017", "2017 client UI", "The 2017 chat, top bar, menu and player list in games.");
   checkbox(game, "unlockFps", "Unlock FPS", "Turn off the engine's 30 FPS cap.");
+  const sm = ctl("serverMode");
+  if (sm) {
+    const g = el("div", "form-group");
+    const lab = el("label", "", "Game server");
+    const sg = el("div", "rbx-select-group"); sg.style.maxWidth = "320px";
+    const sel = el("select", "rbx-select");
+    for (const o of sm.options) { const n = el("option", "", o.textContent); n.value = o.value; sel.appendChild(n); }
+    sel.value = sm.value;
+    sel.addEventListener("change", () => { sm.value = sel.value; sm.dispatchEvent(new Event("change")); saved(lab); });
+    sg.appendChild(sel);
+    g.append(lab, sg, el("p", "form-help", "Games built for Roblox's servers (RemoteEvents, FilteringEnabled) run on a private 2016 game server inside this page. Automatic does that only for games that need it; it uses more memory."));
+    game.appendChild(g);
+  }
   game.appendChild(el("p", "form-help", "Changes apply the next time you press Play."));
 
   // Multiplayer

@@ -152,6 +152,64 @@
     });
   }
 
+  // A private room inside this page: no relay, no WebSocket. The game server
+  // frame and the player reach each other over the local bus only. Used to
+  // run single-player games on a real 2016 game server.
+  function localRooms() {
+    try { return window.top.__rblxLocalRooms || (window.top.__rblxLocalRooms = new Map()); }
+    catch (_) { return window.__rblxLocalRooms || (window.__rblxLocalRooms = new Map()); }
+  }
+  function openLocal(room, role) {
+    const rooms = localRooms();
+    let r = rooms.get(room);
+    if (!r) { r = { next: 2, host: 0, hostConn: null, conns: new Set(), hellos: new Map(), info: {} }; rooms.set(room, r); }
+    const conn = {
+      ws: null, local: true, relay: "local", room, role,
+      ip: ((10 << 24) | r.next++) >>> 0, key: "", host: r.host, info: r.info,
+      listeners: {}, closed: false, reconnects: 0,
+      on(type, fn) { (this.listeners[type] = this.listeners[type] || []).push(fn); },
+      emit(type, msg) { (this.listeners[type] || []).forEach((fn) => { try { fn(msg); } catch (e) { console.warn(e); } }); },
+      send(obj) {
+        if (!obj) return;
+        if (obj.t === "hello") {
+          const h = { t: "hello", from: this.ip, name: String(obj.name || "").slice(0, 32), spec: String(obj.spec || "").slice(0, 4000) };
+          r.hellos.set(this.ip, h);
+          if (r.hostConn && r.hostConn !== this) r.hostConn.emit("hello", h);
+        } else if (obj.t === "info" && role === "host") {
+          r.info = {};
+          for (const k of ["place", "file", "players", "year"]) if (k in obj) r.info[k] = obj[k];
+          for (const c of r.conns) if (c !== this) { c.info = r.info; c.emit("info", { t: "info", info: r.info }); }
+        }
+      },
+      close() {
+        if (this.closed) return;
+        this.closed = true;
+        r.conns.delete(this);
+        if (r.hostConn === this) {
+          r.host = 0; r.hostConn = null;
+          for (const c of r.conns) { c.host = 0; c.emit("host", { t: "host", ip: 0 }); }
+        }
+        if (!r.conns.size) rooms.delete(room);
+        this.emit("closed", {});
+      },
+      waitHost(timeoutMs) {
+        if (this.host) return Promise.resolve(this.host);
+        return new Promise((res, rej) => {
+          const t = setTimeout(() => rej(new Error("The game server did not start.")), timeoutMs || 120000);
+          this.on("host", (m) => { if (m.ip) { clearTimeout(t); res(m.ip); } });
+        });
+      },
+      onBinary: null,
+    };
+    r.conns.add(conn);
+    if (role === "host") {
+      r.host = conn.ip; r.hostConn = conn; conn.host = conn.ip;
+      for (const c of r.conns) if (c !== conn) { c.host = conn.ip; c.emit("host", { t: "host", ip: conn.ip }); }
+      for (const h of r.hellos.values()) setTimeout(() => conn.emit("hello", h), 0);
+    }
+    return Promise.resolve(conn);
+  }
+
   // Engine <-> relay datagram pump.
   function attach(mod, conn) {
     if (typeof mod._rblx_net_take !== "function") throw new Error("This engine build has no network bridge.");
@@ -271,5 +329,5 @@
     return conn;
   }
 
-  window.RblxNet = { open, attach, ipString, GAME_PORT };
+  window.RblxNet = { open, openLocal, attach, ipString, GAME_PORT };
 })();

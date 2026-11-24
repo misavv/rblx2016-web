@@ -158,5 +158,55 @@
     }
   }
 
-  window.PlaceFix = { upgrade };
+  // Does this place lean on the 2016 client/server split (RemoteEvents,
+  // server-only calls)? Those games only work right on a real game server.
+  const SERVER_WORDS = ["OnServerEvent", "OnServerInvoke", "OnClientEvent", "OnClientInvoke", "FireServer", "InvokeServer",
+    "FireClient", "FireAllClients", "IsServer", "IsClient", "FilteringEnabled", "game server", "NetworkServer", "NetworkClient"];
+  function scan(bytes) {
+    const out = { remotes: 0, words: {}, filtering: false, needsServer: false };
+    const look = (text) => { for (const w of SERVER_WORDS) if (text.includes(w)) out.words[w] = (out.words[w] || 0) + 1; };
+    try {
+      if (!(bytes instanceof Uint8Array) || bytes.length < 32) return out;
+      if (ascii(bytes, 0, 8) !== MAGIC) {
+        // XML place: the scripts are right there in the text.
+        const text = new TextDecoder().decode(bytes);
+        out.remotes = (text.match(/class="Remote(Event|Function)"/g) || []).length;
+        out.filtering = /<bool name="FilteringEnabled">true<\/bool>/.test(text);
+        look(text);
+      } else {
+        const typeClass = new Map();
+        let o = 32;
+        while (o + 16 <= bytes.length) {
+          const name = ascii(bytes, o, 4);
+          const csize = u32(bytes, o + 4), size = u32(bytes, o + 8), stored = csize || size;
+          const raw = bytes.subarray(o + 16, o + 16 + stored);
+          o += 16 + stored;
+          if (name === "END\0") break;
+          if (name !== "INST" && name !== "PROP") continue;
+          const data = csize ? (isZstd(raw) ? window.fzstd.decompress(raw) : lz4(raw, size)) : raw;
+          const t = u32(data, 0);
+          const [str, p] = readStr(data, 4);
+          if (name === "INST") {
+            typeClass.set(t, str);
+            if (str === "RemoteEvent" || str === "RemoteFunction") out.remotes += u32(data, p + 1);
+          } else if (str === "Source") {
+            look(new TextDecoder().decode(data.subarray(p + 1)));
+          } else if (str === "FilteringEnabled" && typeClass.get(t) === "Workspace") {
+            out.filtering = data[p + 1] === 1;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("[placefix] scan failed:", e);
+    }
+    const w = out.words;
+    // RemoteEvents alone work in solo (2016 Play Solo ran them in one
+    // DataModel); scripts that ask which side they're on do not.
+    // FilteringEnabled games were made for (and often check for) a server.
+    // (NetworkServer alone is mostly old admin scripts kicking people: fine solo.)
+    out.needsServer = out.filtering || !!(w.IsServer || w.IsClient || w["game server"]);
+    return out;
+  }
+
+  window.PlaceFix = { upgrade, scan };
 })();

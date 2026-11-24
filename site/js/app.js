@@ -1389,6 +1389,19 @@
           console.log("[placefix] upgraded newer place file:", JSON.stringify(r));
         bytes = fixed.bytes;
       }
+      // Games built on the client/server split (RemoteEvents, server-only
+      // calls) run on a private game server in this page, like on 2016 Roblox.
+      if (localServerWanted(bytes)) {
+        try {
+          await playMultiplayer({ local: true, room: "local-" + Date.now().toString(36), relay: "local", bytes }, name);
+          return;
+        } catch (e) {
+          if (e && e.joined) throw e;
+          console.warn("[rbx2016] local game server failed, playing solo:", e);
+          if (hostFrame) { try { hostFrame.remove(); } catch (_) {} hostFrame = null; }
+          setStatus("Starting the 2016 engine…");
+        }
+      }
       setStatus("Starting the 2016 engine… (" + (bytes.length / 1024).toFixed(0) + " KB place)");
       const mod = await ensureModule();
       if (typeof mod._rblx_start_place !== "function") {
@@ -1676,7 +1689,24 @@
     return playerSlot.then((ok) => { if (!ok) playerSlot = null; return ok; });
   }
 
+  // Settings: rblx2016.serverMode = auto (default) | always | never.
+  function serverMode() {
+    let m = "auto";
+    try { m = localStorage.getItem("rblx2016.serverMode") || "auto"; } catch (_) {}
+    return m === "always" || m === "never" ? m : "auto";
+  }
+  function localServerWanted(bytes) {
+    if (SHELL_MODE || RENDER_MODE || XBOX_FLOW || !window.RblxNet || !window.RblxNet.openLocal) return false;
+    const mode = serverMode();
+    if (mode === "never") return false;
+    if (mode === "always") return true;
+    const scan = window.PlaceFix && window.PlaceFix.scan ? window.PlaceFix.scan(bytes) : null;
+    if (scan) console.log("[rbx2016] place scan:", JSON.stringify(scan));
+    return !!(scan && scan.needsServer);
+  }
+
   async function playMultiplayer(cfg, name) {
+    if (cfg.local) return playLocalServer(cfg, name);
     // ?multi=1 on a local dev server allows several test players in one browser.
     const devMulti = /^(127\.0\.0\.1|localhost)$/.test(location.hostname) &&
       new URLSearchParams(location.search).get("multi") === "1";
@@ -1745,6 +1775,38 @@
     console.log("[rbx2016] joined room", cfg.room, "as", window.RblxNet.ipString(conn.ip));
   }
 
+  // Single player on a private game server: a hidden frame hosts the place,
+  // this page joins it as the only player. No relay; datagrams stay in-page.
+  async function playLocalServer(cfg, name) {
+    const conn = await window.RblxNet.openLocal(cfg.room, "player");
+    const year = ui2017.checked ? 2017 : 2016;
+    setStatus("Starting the game server for “" + selected.name + "”…");
+    await startHostFrame(cfg, selected, cfg.bytes, year);
+    const hostIp = await conn.waitHost(60000);
+    const mod = await ensureModule();
+    if (typeof mod._rblx_join_start !== "function") throw new Error("This engine build has no multiplayer support.");
+    if (typeof mod._rblx_set_script_year === "function") {
+      const use2017 = year === 2017 && await load2017Scripts(mod);
+      mod.ccall("rblx_set_script_year", null, ["number"], [use2017 ? 2017 : 2016]);
+    }
+    if (typeof mod._rblx_set_membership === "function")
+      mod.ccall("rblx_set_membership", null, ["number"], [bcTier()]);
+    window.RblxNet.attach(mod, conn);
+    conn.send({ t: "hello", name, spec: avatarSpec() });
+    await configureAssetProxy(mod);
+    setPlaceInfo(mod, selected.name || "", "BLOXRO");
+    setStatus("Joining your game server…");
+    const rc = mod.ccall("rblx_join_start", "number",
+      ["number", "number", "number", "string", "string", "number"],
+      [hostIp >>> 0, window.RblxNet.GAME_PORT, 1, name, new URL(".", location.href).href, touchDevice ? 1 : 0]);
+    if (rc !== 0) { const e = new Error("rblx_join_start returned " + rc); e.joined = true; throw e; }
+    window.__mp = { conn, mod, local: true };
+    watchJoin(mod);
+    try { await afterStart(mod, { conn }); }
+    catch (e) { e.joined = true; throw e; }
+    console.log("[rbx2016] playing", selected.name, "on a local game server");
+  }
+
   // Surfaces a failed connection (the engine's own UI covers disconnects).
   function watchJoin(mod) {
     const started = Date.now();
@@ -1783,7 +1845,9 @@
       preloadSavedData(mod, place.id);
       await configureAssetProxy(mod);
       post({ t: "status", msg: "registering with the relay" });
-      const conn = await window.RblxNet.open(q.get("relay") || defaultRelay(), q.get("room") || "lobby", "host");
+      const conn = q.get("relay") === "local"
+        ? await window.RblxNet.openLocal(q.get("room") || "local", "host")
+        : await window.RblxNet.open(q.get("relay") || defaultRelay(), q.get("room") || "lobby", "host");
       window.RblxNet.attach(mod, conn);
       conn.on("hello", (m) => {
         try { mod.ccall("rblx_server_set_avatar", null, ["number", "string"], [m.from & 0xffffff, m.spec || ""]); } catch (_) {}
@@ -3083,7 +3147,7 @@
       });
     },
     // Settings live on the old menu's controls, so the engine reads them as before.
-    control: (id) => (/^(userName|ui2017|unlockFps|lightGrid|gles2Shaders|showDiag|cookieInput|cookieSave|cookieClear|cookieState|cookieNote|mpRelay|mpEnable|mpRoom)$/.test(id) ? $(id) : null),
+    control: (id) => (/^(userName|ui2017|unlockFps|serverMode|lightGrid|gles2Shaders|showDiag|cookieInput|cookieSave|cookieClear|cookieState|cookieNote|mpRelay|mpEnable|mpRoom)$/.test(id) ? $(id) : null),
   };
 
   function openCatalog() {
@@ -3110,6 +3174,13 @@
     try { userName.value = localStorage.getItem("rblx2016.name") || "Player1"; } catch (_) {}
     try { unlockFps.checked = localStorage.getItem("rblx2016.unlockFps") === "1"; } catch (_) {}
     try { ui2017.checked = localStorage.getItem("rblx2016.ui2017") === "1"; } catch (_) {}
+    const serverModeSel = $("serverMode");
+    if (serverModeSel) {
+      serverModeSel.value = serverMode();
+      serverModeSel.addEventListener("change", () => {
+        try { localStorage.setItem("rblx2016.serverMode", serverModeSel.value); } catch (_) {}
+      });
+    }
     ui2017.addEventListener("change", () => {
       try { localStorage.setItem("rblx2016.ui2017", ui2017.checked ? "1" : "0"); } catch (_) {}
     });
